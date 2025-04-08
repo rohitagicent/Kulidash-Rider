@@ -5,16 +5,17 @@ import {
   NativeStackNavigationOptions,
 } from '@react-navigation/native-stack';
 import OnboardingScreen from '../Screens/OnboardingScreen';
+import LoginScreen from '../Screens/profileSetup/LoginScreen';
+import SingupScreen from '../Screens/profileSetup/SingupScreen';
 
-// Define RootStackParamList (types for the screens)
 type RootStackParamList = {
-  OnboardingScreen: undefined; // 'undefined' means no parameters passed to this screen
+  OnboardingScreen: undefined; 
+  LoginScreen: { loginId: string; password: string };
+  SingupScreen:{name:string, phone:number, email:string, preferredArea:string}
 };
 
-// Create the stack navigator
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-// Define the AppNavigator component
 const AppNavigator: React.FC = () => {
   return (
     <NavigationContainer>
@@ -22,6 +23,16 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen
           name="OnboardingScreen"
           component={OnboardingScreen}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="SingupScreen"
+          component={SingupScreen}
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

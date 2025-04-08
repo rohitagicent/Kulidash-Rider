@@ -1,0 +1,129 @@
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useState, useRef } from 'react';
+import Tick from "../Assets/tick.svg";
+import { colors } from '../utils/colors';
+import { fp, hp, wp } from '../utils/dimensions';
+
+interface OTPState {
+  otp: number[];
+}
+
+const mailVerify: React.FC = () => {
+
+  const [otp, setOtp] = useState<number[]>([0, 0, 0, 0, 0, 0]);
+
+
+  const inputRefs = useRef<(TextInput | null)[]>([]); 
+
+  const handleOtpChange = (value: string, index: number): void => {
+
+    const numericValue = parseInt(value, 10);
+
+    if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 9) {
+      const newOtp = [...otp];
+      newOtp[index] = numericValue;
+      setOtp(newOtp);
+
+
+      if (value && index < otp.length - 1) {
+        inputRefs.current[index + 1]?.focus();
+      }
+    }
+  };
+
+  return (
+    <View style={styles.modalContent}>
+      <Tick width={97} height={97} />
+
+      <View style={styles.heading}>
+        <Text style={styles.VerifyText}>Verify your Contact Info</Text>
+        <Text style={styles.subText}>Enter Your 6 digit verification code sent to *****@gmail.com</Text>
+      </View>
+
+      <View style={styles.otpContainer}>
+        {otp.map((digit, index) => (
+          <TextInput
+            key={index}
+            style={[styles.otpInput, digit !== 0 ? { borderColor: colors.BLUE } : {}]} 
+            maxLength={1}
+            keyboardType="numeric"
+            value={digit !== 0 ? digit.toString() : ''} 
+            onChangeText={(value: string) => handleOtpChange(value, index)}
+            textAlign="center"
+            ref={(ref) => {
+              inputRefs.current[index] = ref; 
+            }}
+          />
+        ))}
+      </View>
+
+      <View style={styles.resendView}>
+        <Text style={styles.codeText}>Didn't receive a code? </Text>
+        <Text style={[styles.codeText, styles.resendText]}>Resend</Text>
+      </View>
+      <View>
+        <Text style={styles.sent}>Resent in 2 min</Text>
+      </View>
+    </View>
+  );
+};
+
+export default mailVerify;
+
+const styles = StyleSheet.create({
+  modalContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.WHITE,
+    padding: wp(4),
+    borderRadius: 10,
+  },
+  heading: {
+    alignItems: 'center',
+  },
+  VerifyText: {
+    fontSize: fp(2.3),
+    fontWeight: '800',
+    marginTop: hp(2),
+    color: colors.BLACK,
+  },
+  subText: {
+    fontSize: fp(1.2),
+    fontWeight: '400',
+  },
+  otpContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: hp(2),
+    width: wp(75),
+  },
+  otpInput: {
+    width: wp(10),
+    height: wp(10),
+    backgroundColor: '#5151511A',
+    borderRadius: 8,
+    fontSize: fp(2),
+    color: colors.BLACK,
+    textAlign: 'center',
+    marginHorizontal: wp(1),
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  resendView: {
+    flexDirection: 'row',
+    marginTop: hp(1.5),
+  },
+  codeText: {
+    fontSize: fp(1.4),
+    color: colors.GREY,
+  },
+  resendText: {
+    color: colors.BLUE,
+    fontSize: fp(1.4),
+  },
+  sent: {
+    fontSize: fp(1.4),
+    color: colors.GREY,
+  },
+});

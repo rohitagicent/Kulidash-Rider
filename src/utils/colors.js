@@ -1,4 +1,15 @@
 export const colors = {
-    BLUE:'#2A60F1',
-  };
-  
+  BLUE: '#2A60F1',
+  LIGHT_BLUE: '#1E88E5',
+  LIGHT_GREY: '#BBDEFB',
+  DARK_BLUE: '#0D47A1',
+  GREEN: '#4CAF50',
+  GREY: '#999',
+  LIGHT_GREY_TEXT: '#666',
+  LIGHT_GREY_BACKGROUND: '#E3F2FD',
+  WHITE: '#fff',
+  DARK_GREY: '#333',
+  BLACK:'#000000',
+  BUTTON_COLOR: '##EDEDED',
+  TEXT_COLOR:'##8D8D8D',
+};

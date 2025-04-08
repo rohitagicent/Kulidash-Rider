@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Svg, Path, Circle } from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import OnboardingImage1 from "../Assets/iPhone.svg";
 import OnboardingImage2 from "../Assets/iPhone2.svg";
 import OnboardingImage3 from "../Assets/iPhone3.svg";
 import Group from "../Assets/Group.svg" 
 import BottomVector from "../Assets/Vector1.svg"
 import { hp, wp, fp } from '../utils/dimensions'; 
+
+
+type RootStackParamList = {
+  LoginScreen: undefined; 
+};
 
 interface OnboardingSlide {
   id: number;
@@ -43,6 +50,7 @@ const onboardingSlides: OnboardingSlide[] = [
 const { width } = Dimensions.get('window');
 
 const OnboardingCarousel: React.FC = () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [currentSlide, setCurrentSlide] = useState<number>(0);
 
   const goToNextSlide = () => {
@@ -52,12 +60,15 @@ const OnboardingCarousel: React.FC = () => {
   };
 
   const handleJoinNow = () => {
-    console.log('User clicked Join Now');
+    navigation.navigate('LoginScreen');
+  };
+
+  const handleSkip = () => {
+    navigation.navigate('LoginScreen');
   };
 
   return (
     <View style={styles.container}>
-    
       <View style={styles.topSection}>
         <View style={styles.imageContainer}>
           {onboardingSlides[currentSlide].image}
@@ -67,7 +78,6 @@ const OnboardingCarousel: React.FC = () => {
           <Group width={wp(50)} height={wp(50)} />
         </View>
       </View>
-
 
       <View style={styles.bottomSection}>
         <BottomVector 
@@ -87,7 +97,10 @@ const OnboardingCarousel: React.FC = () => {
         </View>
 
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.skipButton}>
+          <TouchableOpacity 
+            style={styles.skipButton}
+            onPress={handleSkip}
+          >
             <Text style={[styles.skipText, { fontSize: fp(2) }]}>Skip</Text>
           </TouchableOpacity>
 
