@@ -9,6 +9,7 @@ import OnboardingImage3 from "../Assets/iPhone3.svg";
 import Group from "../Assets/Group.svg" 
 import BottomVector from "../Assets/Vector1.svg"
 import { hp, wp, fp } from '../utils/dimensions'; 
+import { typography } from '../../assets/fonts/typography';
 
 
 type RootStackParamList = {
@@ -177,6 +178,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: 'bold',
+    fontFamily:typography.DMSans_Bold_700,
     color: 'black',
     textAlign: 'center',
     marginBottom: hp(2),
@@ -184,12 +186,14 @@ const styles = StyleSheet.create({
   text2: {
     fontWeight: 'bold',
     color: '#2A60F1',
+    fontFamily:typography.DMSans_Bold_700,
   },
   subText: {
     color: 'gray',
     textAlign: 'center',
     marginTop: hp(0.8),
     lineHeight: hp(2.5),
+    fontFamily:typography.DMSans_Medium_500,
   },
   footer: {
     flexDirection: 'row',
@@ -204,6 +208,7 @@ const styles = StyleSheet.create({
   },
   skipText: {
     color: 'gray',
+    fontFamily:typography.DMSans_Semibold_600,
   },
   indicators: {
     flex: 1,
@@ -236,6 +241,7 @@ const styles = StyleSheet.create({
   joinNowText: {
     color: 'white',
     fontWeight: 'bold',
+    fontFamily:typography.DMSans_Semibold_600,
   },
 });
 

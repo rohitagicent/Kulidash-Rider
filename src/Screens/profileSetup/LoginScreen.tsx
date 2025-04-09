@@ -7,6 +7,7 @@ import LoginFrame from "../../Assets/loginFrame.svg";
 import Logo from "../../Assets/Logo.svg";
 import { useNavigation } from '@react-navigation/native';  
 import { StackNavigationProp } from '@react-navigation/stack';
+import { typography } from '../../../assets/fonts/typography';
 
 const LoginScreen: React.FC = () => {
   const { width } = Dimensions.get('window');
@@ -150,6 +151,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: hp(14),
     fontSize: fp(2),
+    fontFamily:typography.DMSans_Bold_700,
     fontWeight: 'bold',
     color: colors.WHITE, 
     textAlign: 'center',
@@ -160,6 +162,7 @@ const styles = StyleSheet.create({
   },
   signInText: {
     fontSize: fp(2.8),
+    fontFamily:typography.DMSans_Bold_700,
     color: colors.BLACK, 
     textAlign: 'center',
     marginBottom: hp(1),
@@ -178,6 +181,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: fp(1.6),
+    fontFamily:typography.DMSans_Medium_500,
     color: colors.DARK_GREY, 
     marginBottom: hp(1),
     fontWeight: '500',
@@ -223,6 +227,7 @@ const styles = StyleSheet.create({
   },
   continueButtonText: {
     color: colors.WHITE, 
+    fontFamily:typography.DMSans_Semibold_600,
     fontSize: fp(1.8),
     fontWeight: 'bold',
   },
@@ -234,11 +239,12 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     color: colors.LIGHT_GREY_TEXT, 
+    fontFamily:typography.DMSans_Medium_500,
     fontSize: fp(2),
   },
   signUpLink: {
     color: colors.BLUE, 
     fontSize: fp(2),
-    fontWeight: 'bold',
+    fontFamily:typography.DMSans_Medium_500,
   },
 });

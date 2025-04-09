@@ -8,16 +8,19 @@ import LoginFrame from "../../Assets/loginFrame.svg";
 import Logo from "../../Assets/Logo.svg";
 import { useNavigation } from '@react-navigation/native';  
 import { StackNavigationProp } from '@react-navigation/stack';
-import CountryPicker, { Country } from 'react-native-country-picker-modal';
 import Modal from 'react-native-modal';
 import PhoneVerify from '../../Modals/PhoneVerify'; 
 import MailVerify from '../../Modals/MailVerify';  
+import CountryPicker, { Country } from 'react-native-country-picker-modal';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { typography } from '../../../assets/fonts/typography';
 
 type RootStackParamList = {
   LoginScreen: undefined;
+  UploadImageScreen: undefined;
 };
 
-const SingupScreen: React.FC = () => {
+const SignupScreen: React.FC = () => {
   const { width } = Dimensions.get('window');
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>(); 
 
@@ -25,19 +28,19 @@ const SingupScreen: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [preferredArea, setPreferredArea] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [countryCode, setCountryCode] = useState<string>('US');
-  const [callingCode, setCallingCode] = useState<string>('1');
-  const [showCountryPicker, setShowCountryPicker] = useState<boolean>(false);
+  const [countryCode, setCountryCode] = useState<string>('91');
+  const [countryPickerVisible, setCountryPickerVisible] = useState<boolean>(false);
+  const [country, setCountry] = useState<Country | null>(null);
 
   const [isPhoneModalVisible, setIsPhoneModalVisible] = useState<boolean>(false); 
   const [isEmailModalVisible, setIsEmailModalVisible] = useState<boolean>(false);  
 
   const isButtonDisabled = !name.trim() || !phoneNumber.trim() || !email.trim() || !preferredArea.trim();
-
-  const onSelectCountry = (country: Country) => {
-    setCountryCode(country.cca2);
-    setCallingCode(country.callingCode[0]);
+  
+  const onSelectCountry = (selectedCountry: Country) => {
+    setCountry(selectedCountry);
+    setCountryCode(selectedCountry.callingCode[0]);
+    setCountryPickerVisible(false);
   };
 
   const togglePhoneModal = () => {
@@ -45,12 +48,11 @@ const SingupScreen: React.FC = () => {
   };
 
   const toggleEmailModal = () => {
-    setIsEmailModalVisible(!isEmailModalVisible);  // Toggle email modal visibility
+    setIsEmailModalVisible(!isEmailModalVisible);
   };
 
   return (
     <View style={styles.container}>
-
       <View style={styles.frameContainer}>
         <LoginFrame 
           width={width} 
@@ -101,12 +103,31 @@ const SingupScreen: React.FC = () => {
                 color={colors.BLUE} 
               />
             </View>
-            <TouchableOpacity 
-              style={styles.countryCodeButton}
-              onPress={() => setShowCountryPicker(true)}
+            <TouchableOpacity
+              style={styles.countryCodeContainer}
+              onPress={() => setCountryPickerVisible(true)}
             >
-              <Text style={styles.countryCodeText}>+{callingCode}</Text>
+              <Text style={styles.countryCodeText}>+{countryCode}</Text>
+              <AntDesign
+                name="down"
+                size={fp(2)}
+                color={'#818181'}
+                style={styles.dropdownIcon}
+              />
             </TouchableOpacity>
+            <CountryPicker
+              countryCode={country?.cca2 || 'US'}
+              withFilter
+              withFlag
+              withCallingCode
+              withAlphaFilter
+              withCallingCodeButton
+              withEmoji
+              visible={countryPickerVisible}
+              onSelect={onSelectCountry}
+              onClose={() => setCountryPickerVisible(false)}
+              containerButtonStyle={{ display: 'none' }}
+            />
             <TextInput
               style={[styles.input, { flex: 2 }]}
               placeholder="Enter Phone Number"
@@ -116,20 +137,6 @@ const SingupScreen: React.FC = () => {
               keyboardType="phone-pad"
             />
           </View>
-          
-          <CountryPicker
-            countryCode={countryCode}
-            withCallingCode
-            withFilter
-            withFlag
-            withEmoji
-            withAlphaFilter
-            withCallingCodeButton
-            visible={showCountryPicker}
-            onSelect={onSelectCountry}
-            onClose={() => setShowCountryPicker(false)}
-            containerButtonStyle={styles.hiddenCountryPicker}
-          />
         </View>
 
         <View style={styles.inputContainer}>
@@ -180,6 +187,7 @@ const SingupScreen: React.FC = () => {
         </View>
 
         <TouchableOpacity 
+          onPress={() => navigation.navigate('UploadImageScreen')}
           style={[
             styles.continueButton, 
             isButtonDisabled ? styles.buttonDisabled : styles.buttonEnabled
@@ -213,7 +221,7 @@ const SingupScreen: React.FC = () => {
         <PhoneVerify /> 
       </Modal>
 
-  
+      {/* Email Verification Modal */}
       <Modal 
         isVisible={isEmailModalVisible} 
         onBackdropPress={toggleEmailModal} 
@@ -225,7 +233,7 @@ const SingupScreen: React.FC = () => {
   );
 }
 
-export default SingupScreen;
+export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -249,9 +257,9 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     position: 'absolute',
+    fontFamily: typography.DMSans_Semibold_600,
     top: hp(14),
     fontSize: fp(2),
-    fontWeight: 'bold',
     color: colors.WHITE, 
     textAlign: 'center',
   },
@@ -261,18 +269,18 @@ const styles = StyleSheet.create({
   },
   signInText: {
     fontSize: fp(2.8), 
+    fontFamily:typography.DMSans_Bold_700,
     color: colors.BLACK, 
     textAlign: 'center',
     marginBottom: hp(0.8), 
-    fontWeight: '700',
   },
   signInUnderline: {
     height: 3, 
-    width: '22%',
+    width: '24%',
     backgroundColor: colors.LIGHT_BLUE,
     alignSelf: 'flex-start',
     marginBottom: hp(2), 
-    marginLeft: hp(11),
+    marginLeft: hp(10.6),
   },
   inputContainer: {
     marginBottom: hp(2), 
@@ -280,6 +288,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: fp(1.6), 
     color: colors.DARK_GREY, 
+    fontFamily:typography.DMSans_Medium_500,
     marginBottom: hp(0.5),
     fontWeight: '500',
   },
@@ -310,28 +319,23 @@ const styles = StyleSheet.create({
     color: colors.DARK_GREY, 
     backgroundColor: colors.WHITE,
   },
-  countryCodeButton: {
+  countryCodeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: wp(2),
-    borderRightWidth: 1,
-    borderColor: '#ddd',
+    backgroundColor: '#F8F9FA',
+    borderRadius: wp(1.5),
     marginRight: wp(2),
   },
   countryCodeText: {
-    fontSize: fp(1.5),
-    color: colors.DARK_GREY,
+    color: '#818181',
   },
-  hiddenCountryPicker: {
-    display: 'none',
-  },
-  verifyButton: {
-    position: 'absolute',
-    right: wp(2),
-    top: '50%',
-    transform: [{ translateY: -12 }],
+  dropdownIcon: {
+    marginLeft: wp(1),
   },
   verifyText: {
     color: colors.LIGHT_BLUE,
-    fontWeight: '700',
+    fontFamily:typography.DMSans_Semibold_600,
   },
   continueButton: {
     borderRadius: wp(2),
@@ -349,7 +353,7 @@ const styles = StyleSheet.create({
   continueButtonText: {
     color: colors.WHITE, 
     fontSize: fp(1.8),
-    fontWeight: 'bold',
+    fontFamily: typography.DMSans_Semibold_600,
   },
   signUpContainer: {
     flexDirection: 'row',
@@ -360,10 +364,11 @@ const styles = StyleSheet.create({
   signUpText: {
     color: colors.LIGHT_GREY_TEXT, 
     fontSize: fp(2),
+    fontFamily:typography.DMSans_Medium_500
   },
   signUpLink: {
     color: colors.BLUE, 
     fontSize: fp(2),
-    fontWeight: 'bold',
+    fontFamily:typography.DMSans_Medium_500
   },
 });

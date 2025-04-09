@@ -18,6 +18,8 @@
     "react-native": "0.78.2",
     "react-native-country-picker-modal": "^2.0.0",
     "react-native-gesture-handler": "^2.25.0",
+    "react-native-image-crop-picker": "^0.42.0",
+    "react-native-image-picker": "^8.2.0",
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-reanimated": "^3.17.2",
     "react-native-responsive-dimensions": "^3.1.1",

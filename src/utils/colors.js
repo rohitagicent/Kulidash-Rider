@@ -1,10 +1,11 @@
 export const colors = {
   BLUE: '#2A60F1',
   LIGHT_BLUE: '#1E88E5',
-  LIGHT_GREY: '#BBDEFB',
   DARK_BLUE: '#0D47A1',
+  LIGHT_GREEN:'#34A8530D',
   GREEN: '#4CAF50',
   GREY: '#999',
+  LIGHT_GREY: '#BBDEFB',
   LIGHT_GREY_TEXT: '#666',
   LIGHT_GREY_BACKGROUND: '#E3F2FD',
   WHITE: '#fff',
