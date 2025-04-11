@@ -1,44 +1,32 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image, Modal } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import { colors } from '../../utils/colors';
 import { hp, wp, fp } from '../../utils/dimensions';
 import ProfileIcon from "../../Assets/profile.svg";
 import { useNavigation } from '@react-navigation/native';
 import ImagePicker from 'react-native-image-crop-picker';
 import { StackNavigationProp } from '@react-navigation/stack';
+import BackButton from "../../Assets/back.svg"
 
 const UploadImageScreen: React.FC = () => {
   
   const [imageUri, setImageUri] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false); 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>(); 
   
-
   type RootStackParamList = {
     UserDetailScreen: undefined; 
   };
 
-  // Function to handle photo upload options
   const handleUpload = () => {
-    Alert.alert(
-      "Select Option",
-      "Choose a photo source",
-      [
-        {
-          text: "Camera",
-          onPress: () => openCamera(),
-        },
-        {
-          text: "Gallery",
-          onPress: () => openGallery(),
-        },
-        { text: "Cancel", style: "cancel" },
-      ],
-      { cancelable: true }
-    );
+    setIsVisible(true); 
   };
 
-  // Function to open Camera with cropping options
+  const onClose = () => {
+    setIsVisible(false); 
+  };
+
   const openCamera = () => {
     ImagePicker.openCamera({
       width: 300,
@@ -48,6 +36,7 @@ const UploadImageScreen: React.FC = () => {
       mediaType: 'photo',
     }).then(image => {
       setImageUri(image.path);
+      onClose();
     }).catch(error => {
       if (error.code !== 'E_PICKER_CANCELLED') {
         console.log('Camera Error: ', error);
@@ -55,7 +44,6 @@ const UploadImageScreen: React.FC = () => {
     });
   };
 
-  // Function to open Image Gallery with cropping options
   const openGallery = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -65,6 +53,7 @@ const UploadImageScreen: React.FC = () => {
       mediaType: 'photo',
     }).then(image => {
       setImageUri(image.path);
+      onClose();
     }).catch(error => {
       if (error.code !== 'E_PICKER_CANCELLED') {
         console.log('Gallery Error: ', error);
@@ -79,7 +68,7 @@ const UploadImageScreen: React.FC = () => {
         onPress={() => navigation.goBack()}
         activeOpacity={0.7}
       >
-        <Icon name="arrow-back-ios" size={22} color={'#6A6A6A'} />
+        <BackButton/>
       </TouchableOpacity>
 
       <View style={styles.imageSection}>
@@ -128,11 +117,39 @@ const UploadImageScreen: React.FC = () => {
           <Text style={styles.uploadButtonText}>Upload Photo</Text>
         </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>navigation.navigate('UserDetailScreen')}>
-            <Text>SKIP</Text>
-          </TouchableOpacity>
-          
+        <TouchableOpacity onPress={() => navigation.navigate('UserDetailScreen')}>
+          <Text>SKIP</Text>
+        </TouchableOpacity>
       </View>
+
+      <Modal transparent visible={isVisible} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <TouchableOpacity 
+              style={styles.closeButton}
+              onPress={onClose}
+            >
+              <Icon name="x" size={24} color={colors.BLUE} />
+            </TouchableOpacity>
+            
+            <Text style={styles.modalTitle}>Profile picture</Text>
+            <View style={styles.optionsContainer}>
+              <View style={styles.optionColumn}>
+                <TouchableOpacity style={styles.optionButton} onPress={openCamera}>
+                  <Icon name="camera" size={fp(2.5)} color="#007AFF" />
+                </TouchableOpacity>
+                <Text style={styles.optionText}>Camera</Text>
+              </View>
+              <View style={styles.optionColumn}>
+                <TouchableOpacity style={styles.optionButton} onPress={openGallery}>
+                  <Icon name="image" size={fp(2.5)} color="#007AFF" />
+                </TouchableOpacity>
+                <Text style={styles.optionText}>Gallery</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -147,12 +164,8 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     top: hp(5.5),
-    left: hp(2.4),
-    backgroundColor: colors.GREY,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: hp(1),
-    borderRadius: 10,
+    left: hp(2.5),
+    padding: hp(0.8),
   },
   imageSection: {
     alignItems: 'center',
@@ -168,7 +181,7 @@ const styles = StyleSheet.create({
   profileImage: {
     width: '100%',
     height: '100%',
-    borderRadius: hp(12.5), // Makes the image circular
+    borderRadius: hp(12.5), 
   },
   textContainer: {
     marginTop: hp(3),
@@ -236,5 +249,62 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
     fontSize: fp(2.6),
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: colors.WHITE,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
+    paddingTop: 30,
+    paddingBottom: 40,
+    alignItems: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: -20,
+    alignSelf: 'center',
+    backgroundColor: colors.WHITE,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth:wp(1),
+    borderColor:colors.LIGHT_GREY
+  },
+  modalTitle: {
+    fontSize: fp(2.2),
+    fontWeight: '500',
+    color: colors.BLACK,
+    marginBottom: hp(3),
+    marginTop: hp(1),
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    paddingHorizontal: wp(10),
+  },
+  optionColumn: {
+    alignItems: 'center',
+  },
+  optionButton: {
+    padding: 5,
+    borderRadius: wp(10),
+    backgroundColor: '#F2F2F7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: wp(16),
+    height: wp(16),
+
+  },
+  optionText: {
+    fontSize: fp(1.8),
+    color: colors.BLACK,
   },
 });

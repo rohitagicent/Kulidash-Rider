@@ -1,40 +1,63 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
-import React, { useState, useRef } from 'react';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
 import Tick from "../Assets/tick.svg";
 import { colors } from '../utils/colors';
 import { fp, hp, wp } from '../utils/dimensions';
 
-interface OTPState {
-  otp: number[];
+interface PhoneVerifyProps {
+  onVerifyOtp: () => void; 
 }
 
-const PhoneVerify: React.FC = () => {
-
+const PhoneVerify: React.FC<PhoneVerifyProps> = ({ onVerifyOtp }) => {
   const [otp, setOtp] = useState<number[]>([0, 0, 0, 0, 0, 0]);
+  const [isOtpIncorrect, setIsOtpIncorrect] = useState<boolean>(false); // New state for OTP error
+  const inputRefs = useRef<(TextInput | null)[]>([]);
 
-
-  const inputRefs = useRef<(TextInput | null)[]>([]); 
+  useEffect(() => {
+    if (otp.every(digit => digit !== 0)) {
+      handleVerifyOtp();
+    }
+  }, [otp]);
 
   const handleOtpChange = (value: string, index: number): void => {
-
     const numericValue = parseInt(value, 10);
 
-    if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 9) {
+    if (value === '') {
+      // Handle backspace
+      const newOtp = [...otp];
+      newOtp[index] = 0;
+      setOtp(newOtp);
+
+      // Focus on the previous input if there's a backspace
+      if (index > 0) {
+        inputRefs.current[index - 1]?.focus();
+      }
+    } else if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 9) {
+      // Update OTP array only if the value is valid
       const newOtp = [...otp];
       newOtp[index] = numericValue;
       setOtp(newOtp);
 
-
+      // Focus on the next input if a valid value is entered
       if (value && index < otp.length - 1) {
         inputRefs.current[index + 1]?.focus();
       }
     }
   };
 
+  const handleVerifyOtp = () => {
+    // OTP verification logic here
+    if (otp.join('') === '123456') { 
+      onVerifyOtp(); // Close modal on success
+      setIsOtpIncorrect(false); // Reset error state
+    } else {
+      setIsOtpIncorrect(true); // Set error state on failure
+    }
+  };
+
   return (
     <View style={styles.modalContent}>
       <Tick width={97} height={97} />
-
       <View style={styles.heading}>
         <Text style={styles.VerifyText}>Verify your Contact Info</Text>
         <Text style={styles.subText}>Enter Your 6 digit verification code sent to ********687</Text>
@@ -44,18 +67,20 @@ const PhoneVerify: React.FC = () => {
         {otp.map((digit, index) => (
           <TextInput
             key={index}
-            style={[styles.otpInput, digit !== 0 ? { borderColor: colors.BLUE } : {}]} 
+            style={[styles.otpInput, digit !== 0 ? { borderColor: colors.BLUE } : {}]}
             maxLength={1}
             keyboardType="numeric"
-            value={digit !== 0 ? digit.toString() : ''} 
+            value={digit !== 0 ? digit.toString() : ''}
             onChangeText={(value: string) => handleOtpChange(value, index)}
             textAlign="center"
-            ref={(ref) => {
-              inputRefs.current[index] = ref; 
-            }}
+            ref={(ref) => { inputRefs.current[index] = ref; }}
           />
         ))}
       </View>
+
+      {isOtpIncorrect && (
+        <Text style={styles.errorText}>Wrong OTP</Text> // Display error message
+      )}
 
       <View style={styles.resendView}>
         <Text style={styles.codeText}>Didn't receive a code? </Text>
@@ -125,5 +150,10 @@ const styles = StyleSheet.create({
   sent: {
     fontSize: fp(1.4),
     color: colors.GREY,
+  },
+  errorText: {
+    fontSize: fp(1.4),
+    color: colors.LIGHT_GREY, 
+    marginTop: hp(1),
   },
 });

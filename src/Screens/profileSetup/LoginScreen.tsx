@@ -170,11 +170,11 @@ const styles = StyleSheet.create({
   },
   signInUnderline: {
     height: 3,
-    width: '12%',
-    backgroundColor: colors.LIGHT_BLUE,
+    width: wp(12),
+    backgroundColor: colors.BLUE,
     alignSelf: 'flex-start',
     marginBottom: hp(3),
-    marginLeft: hp(6.5),
+    marginLeft: hp(7),
   },
   inputContainer: {
     marginBottom: hp(3),
@@ -184,14 +184,14 @@ const styles = StyleSheet.create({
     fontFamily:typography.DMSans_Medium_500,
     color: colors.DARK_GREY, 
     marginBottom: hp(1),
-    fontWeight: '500',
+    marginLeft:wp(3)
   },
   inputWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: 5,
+    borderRadius: hp(2.9),
     padding: wp(2),
     backgroundColor: colors.WHITE,
   },
@@ -223,13 +223,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BLUE, 
   },
   buttonDisabled: {
-    backgroundColor: colors.GREY, 
+    backgroundColor: '#EDEDED', 
   },
   continueButtonText: {
     color: colors.WHITE, 
     fontFamily:typography.DMSans_Semibold_600,
     fontSize: fp(1.8),
-    fontWeight: 'bold',
   },
   signUpContainer: {
     flexDirection: 'row',

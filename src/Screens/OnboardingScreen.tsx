@@ -10,6 +10,7 @@ import Group from "../Assets/Group.svg"
 import BottomVector from "../Assets/Vector1.svg"
 import { hp, wp, fp } from '../utils/dimensions'; 
 import { typography } from '../../assets/fonts/typography';
+import { colors } from '../utils/colors';
 
 
 type RootStackParamList = {
@@ -82,7 +83,7 @@ const OnboardingCarousel: React.FC = () => {
 
       <View style={styles.bottomSection}>
         <BottomVector 
-          width={width} 
+          width={wp(100)} 
           height={hp(50)} 
           style={styles.vectorBackground}
         />
@@ -144,7 +145,7 @@ const OnboardingCarousel: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#2A60F1"
+    backgroundColor: colors.BLUE
   },
   topSection: {
     flex: 0.6,
@@ -156,13 +157,11 @@ const styles = StyleSheet.create({
   },
   vectorBackground: {
     position: 'absolute',
-    bottom: -5,
-    left: 0,
-    right: 0,
+    bottom: hp(-5),
   },
   imageContainer: {
     alignItems: 'center',
-    marginBottom: -hp(10),
+    marginBottom: -hp(12),
   },
   groupContainer: {
     position: 'absolute',
@@ -177,19 +176,17 @@ const styles = StyleSheet.create({
     paddingTop: hp(8),
   },
   text: {
-    fontWeight: 'bold',
     fontFamily:typography.DMSans_Bold_700,
-    color: 'black',
+    color: colors.BLACK,
     textAlign: 'center',
     marginBottom: hp(2),
   },
   text2: {
-    fontWeight: 'bold',
-    color: '#2A60F1',
+    color: colors.BLUE,
     fontFamily:typography.DMSans_Bold_700,
   },
   subText: {
-    color: 'gray',
+    color: colors.GREY,
     textAlign: 'center',
     marginTop: hp(0.8),
     lineHeight: hp(2.5),
@@ -224,7 +221,7 @@ const styles = StyleSheet.create({
     marginHorizontal: wp(1),
   },
   activeIndicator: {
-    backgroundColor: '#2A60F1',
+    backgroundColor: colors.BLUE,
     width: wp(4),
   },
   nextButton: {
@@ -232,7 +229,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   joinNowButton: {
-    backgroundColor: '#2A60F1',
+    backgroundColor: colors.BLUE,
     paddingVertical: hp(1.5),
     paddingHorizontal: wp(8),
     borderRadius: wp(6),
@@ -240,7 +237,6 @@ const styles = StyleSheet.create({
   },
   joinNowText: {
     color: 'white',
-    fontWeight: 'bold',
     fontFamily:typography.DMSans_Semibold_600,
   },
 });

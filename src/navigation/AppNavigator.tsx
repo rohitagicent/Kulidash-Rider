@@ -9,6 +9,12 @@ import LoginScreen from '../Screens/profileSetup/LoginScreen';
 import SingupScreen from '../Screens/profileSetup/SingupScreen';
 import UploadImageScreen from '../Screens/profileSetup/UploadImageScreen';
 import UserDetailScreen from '../Screens/profileSetup/UserDetailScreen';
+import RiderVerificationScreen from '../Screens/profileSetup/RiderVerificationScreen';
+import VehicleInfoScreen from '../Screens/profileSetup/VehicleInfoScreen';
+import UploadDocument from '../Screens/profileSetup/UploadDocument';
+import VehicleImage from '../Screens/profileSetup/VehicleImage';
+import AllsetScreen from '../Screens/profileSetup/AllsetScreen';
+import RiderNavigator from './RiderNavigator';
 
 type RootStackParamList = {
   OnboardingScreen: undefined; 
@@ -16,6 +22,12 @@ type RootStackParamList = {
   SingupScreen:{name:string, phone:number, email:string, preferredArea:string}
   UploadImageScreen:{Image: string}
   UserDetailScreen:{name:string, phone:number, email:string, preferredArea:string}
+  RiderVerificationScreen:undefined;
+  VehicleInfoScreen:undefined;
+  UploadDocument:undefined;
+  VehicleImage:undefined;
+  AllsetScreen:undefined;
+  RiderNavigator:undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -47,6 +59,36 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen
           name="UserDetailScreen"
           component={UserDetailScreen}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="RiderVerificationScreen"
+          component={RiderVerificationScreen}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="VehicleInfoScreen"
+          component={VehicleInfoScreen}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="UploadDocument"
+          component={UploadDocument}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="VehicleImage"
+          component={VehicleImage}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="AllsetScreen"
+          component={AllsetScreen}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="RiderNavigator"
+          component={RiderNavigator}
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>
