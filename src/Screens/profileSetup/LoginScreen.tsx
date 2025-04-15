@@ -20,7 +20,8 @@ const LoginScreen: React.FC = () => {
   const isButtonDisabled = !email.trim() || !password.trim();
 
   type RootStackParamList = {
-    SingupScreen: undefined; 
+    SingupScreen: undefined;
+    RiderNavigator: undefined;
   };
 
   return (
@@ -98,6 +99,7 @@ const LoginScreen: React.FC = () => {
         </View>
 
         <TouchableOpacity 
+        onPress={()=>navigation.navigate('RiderNavigator')}
           style={[
             styles.continueButton, 
             isButtonDisabled ? styles.buttonDisabled : styles.buttonEnabled

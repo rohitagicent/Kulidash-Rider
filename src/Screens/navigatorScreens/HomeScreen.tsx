@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,11 +8,13 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps';
+import MapView, {Marker, Region} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import { fp, hp, wp } from '../../utils/dimensions';
-import { typography } from '../../../assets/fonts/typography';
-import { colors } from '../../utils/colors';
+import {fp, hp, wp} from '../../utils/dimensions';
+import {typography} from '../../../assets/fonts/typography';
+import {colors} from '../../utils/colors';
+import OrderDetail from '../../Modals/OrderDetail';
+import OrderConfirmedModal from '../../Modals/OrderConfirmedModal';
 
 interface Coordinates {
   latitude: number;
@@ -20,61 +22,27 @@ interface Coordinates {
 }
 
 const customMapStyle = [
-  {
-    elementType: 'geometry',
-    stylers: [{ color: '#f5f5f5' }],
-  },
-  {
-    elementType: 'labels.icon',
-    stylers: [{ visibility: 'off' }],
-  },
-  {
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#616161' }],
-  },
-  {
-    elementType: 'labels.text.stroke',
-    stylers: [{ color: '#f5f5f5' }],
-  },
-  {
-    featureType: 'administrative.land_parcel',
-    stylers: [{ visibility: 'off' }],
-  },
-  {
-    featureType: 'poi',
-    stylers: [{ visibility: 'off' }],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{ color: '#ffffff' }],
-  },
-  {
-    featureType: 'road.arterial',
-    stylers: [{ color: '#e0e0e0' }],
-  },
-  {
-    featureType: 'road.highway',
-    stylers: [{ color: '#dadada' }],
-  },
-  {
-    featureType: 'road.local',
-    stylers: [{ color: '#f0f0f0' }],
-  },
-  {
-    featureType: 'transit',
-    stylers: [{ visibility: 'off' }],
-  },
-  {
-    featureType: 'water',
-    stylers: [{ color: '#c9c9c9' }],
-  },
+  {elementType: 'geometry', stylers: [{color: '#f5f5f5'}]},
+  {elementType: 'labels.icon', stylers: [{visibility: 'off'}]},
+  {elementType: 'labels.text.fill', stylers: [{color: '#616161'}]},
+  {elementType: 'labels.text.stroke', stylers: [{color: '#f5f5f5'}]},
+  {featureType: 'administrative.land_parcel', stylers: [{visibility: 'off'}]},
+  {featureType: 'poi', stylers: [{visibility: 'off'}]},
+  {featureType: 'road', elementType: 'geometry', stylers: [{color: '#ffffff'}]},
+  {featureType: 'road.arterial', stylers: [{color: '#e0e0e0'}]},
+  {featureType: 'road.highway', stylers: [{color: '#dadada'}]},
+  {featureType: 'road.local', stylers: [{color: '#f0f0f0'}]},
+  {featureType: 'transit', stylers: [{visibility: 'off'}]},
+  {featureType: 'water', stylers: [{color: '#c9c9c9'}]},
 ];
 
 const HomeScreen: React.FC = () => {
   const [location, setLocation] = useState<Coordinates | null>(null);
   const [isOnline, setIsOnline] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isOrderConfirmedVisible, setIsOrderConfirmedVisible] =
+    useState<boolean>(false);
 
   const requestLocationPermission = async (): Promise<boolean> => {
     if (Platform.OS === 'android') {
@@ -87,7 +55,7 @@ const HomeScreen: React.FC = () => {
             buttonNeutral: 'Ask Me Later',
             buttonNegative: 'Cancel',
             buttonPositive: 'OK',
-          }
+          },
         );
         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
@@ -104,12 +72,12 @@ const HomeScreen: React.FC = () => {
       if (!hasPermission) return;
 
       Geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation({ latitude, longitude });
+        position => {
+          const {latitude, longitude} = position.coords;
+          setLocation({latitude, longitude});
           setLoading(false);
         },
-        (error) => {
+        error => {
           console.warn(error.message);
           setLoading(false);
         },
@@ -117,38 +85,46 @@ const HomeScreen: React.FC = () => {
           enableHighAccuracy: true,
           timeout: 15000,
           maximumAge: 10000,
-        }
+        },
       );
     };
 
     getCurrentLocation();
+
+    const timer = setTimeout(() => {
+      setIsModalVisible(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <View style={styles.container}>
-
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <Text style={styles.orderText}>Looking for Orders</Text>
-        <TouchableOpacity
-          style={[
-            styles.toggleButton,
-            {
-              backgroundColor: isOnline ? colors.GREEN : colors.RED,
-            },
-          ]}
-          onPress={() => setIsOnline(!isOnline)}
-        >
-          <Text style={styles.toggleText}>
-            {isOnline ? 'Online' : 'Offline'}
+      {!isOrderConfirmedVisible && (
+        <View style={styles.topBar}>
+          <Text style={styles.orderText}>
+            {isModalVisible ? 'Accept or Decline' : 'Looking for Orders'}
           </Text>
-          <View style={styles.radioOuter}>
-            {isOnline && <View style={styles.radioInner} />}
-          </View>
-        </TouchableOpacity>
-      </View>
 
-      {/* Map or Loader */}
+          {!isModalVisible && (
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={[
+                styles.toggleButton,
+                {backgroundColor: isOnline ? colors.GREEN : colors.RED},
+              ]}
+              onPress={() => setIsOnline(!isOnline)}>
+              <Text style={styles.toggleText}>
+                {isOnline ? 'Online' : 'Offline'}
+              </Text>
+              <View style={styles.radioOuter}>
+                {isOnline && <View style={styles.radioInner} />}
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+
       {loading ? (
         <View style={styles.loaderContainer}>
           <ActivityIndicator size="large" color={colors.BLUE} />
@@ -157,24 +133,38 @@ const HomeScreen: React.FC = () => {
         <MapView
           style={styles.map}
           customMapStyle={customMapStyle}
-          initialRegion={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          } as Region}
-        >
+          initialRegion={
+            {
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            } as Region
+          }>
           <Marker
             coordinate={{
               latitude: location.latitude,
               longitude: location.longitude,
             }}
             title="You are here"
-            description="This is your current location"
             pinColor="blue"
           />
         </MapView>
       ) : null}
+
+      <OrderDetail
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onAccept={() => {
+          setIsModalVisible(false);
+          setIsOrderConfirmedVisible(true);
+        }}
+      />
+
+      <OrderConfirmedModal
+        visible={isOrderConfirmedVisible}
+        onClose={() => setIsOrderConfirmedVisible(false)}
+      />
     </View>
   );
 };
@@ -207,20 +197,20 @@ const styles = StyleSheet.create({
   toggleButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: wp(2.5),
+    paddingHorizontal: wp(2),
     paddingVertical: hp(0.7),
     borderRadius: wp(5),
   },
   toggleText: {
     color: colors.WHITE,
-    fontFamily: typography.DMSans_Bold_700,
-    fontSize: fp(1.8),
-    marginRight: wp(1.5),
+    fontFamily: typography.DMSans_Medium_500,
+    fontSize: fp(1.6),
+    marginRight: wp(1),
   },
   radioOuter: {
-    width: wp(4),
-    height: wp(4),
-    borderRadius: wp(2),
+    width: wp(3),
+    height: wp(3),
+    borderRadius: wp(1.5),
     backgroundColor: colors.WHITE,
     justifyContent: 'center',
     alignItems: 'center',

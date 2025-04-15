@@ -11,11 +11,13 @@ export const colors = {
   WHITE: '#fff',
   DARK_GREY: '#333',
   BLACK:'#000000',
-  BUTTON_COLOR: '#6A6A6A26',
+  BUTTON_COLOR: '#6A6A6A',
   TEXT_COLOR:'#8D8D8D',
   YELLOW: "#E6B323",
   RED:'#FF0000',
-  HEADING:'#515151'
+  HEADING:'#515151',
+  BODY_TEXT: '#888888',
+  BORDER:'#E9E4E4',
+  LIGHT_BODY_TEXT:'#BABABA',
 
-  
 };

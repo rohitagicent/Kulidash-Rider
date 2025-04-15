@@ -1797,7 +1797,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated (3.17.2):
+  - RNReanimated (3.17.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1819,10 +1819,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.17.2)
-    - RNReanimated/worklets (= 3.17.2)
+    - RNReanimated/reanimated (= 3.17.3)
+    - RNReanimated/worklets (= 3.17.3)
     - Yoga
-  - RNReanimated/reanimated (3.17.2):
+  - RNReanimated/reanimated (3.17.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1844,9 +1844,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.17.2)
+    - RNReanimated/reanimated/apple (= 3.17.3)
     - Yoga
-  - RNReanimated/reanimated/apple (3.17.2):
+  - RNReanimated/reanimated/apple (3.17.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1869,7 +1869,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated/worklets (3.17.2):
+  - RNReanimated/worklets (3.17.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1891,9 +1891,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/worklets/apple (= 3.17.2)
+    - RNReanimated/worklets/apple (= 3.17.3)
     - Yoga
-  - RNReanimated/worklets/apple (3.17.2):
+  - RNReanimated/worklets/apple (3.17.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2375,7 +2375,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 66e593addd8952725107cfaa4f5e3378e946b541
   RNImageCropPicker: 64b6bec9ec185ee59b71a93d7058816bd0e1916e
   RNPermissions: 68b85791b141fd52c143121381cf60d494db0dc6
-  RNReanimated: 1132f0ffe1d28ac76a227405ed16f037a6692008
+  RNReanimated: 7531838a08d600caf2c961a21b79d5212a7b76ac
   RNScreens: 0f01bbed9bd8045a8d58e4b46993c28c7f498f3c
   RNSVG: 8588ee1ca9b2e6fd2c99466e35b3db0e9f81bb40
   RNVectorIcons: 14a0c42f16a26bcc3e79a19bc1c5718284b1d469
