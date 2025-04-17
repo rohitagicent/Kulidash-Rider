@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert, ScrollView, SafeAreaView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../../utils/colors';
 import { fp, hp, wp } from '../../utils/dimensions';
 import { typography } from '../../../assets/fonts/typography';
-// import DocumentPicker, { DocumentPickerResult } from '@react-native-documents/picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -16,61 +15,11 @@ type RootStackParamList = {
 };
 
 const UploadDocument: React.FC = () => {
-  // Commented out state for documents
-  // const [driverLicense, setDriverLicense] = useState<DocumentPickerResult[0] | null>(null);
-  // const [utilityBill, setUtilityBill] = useState<DocumentPickerResult[0] | null>(null);
-  // const [inspectionDoc, setInspectionDoc] = useState<DocumentPickerResult[0] | null>(null);
-  
-  // For UI demonstration only - will show uploaded state
   const [driverLicense, setDriverLicense] = useState<any>(null);
   const [utilityBill, setUtilityBill] = useState<any>(null);
   const [inspectionDoc, setInspectionDoc] = useState<any>(null);
-  
+
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
-  // Commented out document selection functionality
-  /*
-  const selectFile = async (type: DocumentType) => {
-    try {
-      const response = await DocumentPicker.pick({
-        fileTypes: ['pdf', 'image'],
-        allowMultiSelection: false,
-      });
-
-      const file = response[0];
-
-      if (file.size && file.size > 2 * 1024 * 1024) {
-        Alert.alert('Error', 'File size should be less than 2MB');
-        return;
-      }
-
-      const validTypes = ['image/jpeg', 'image/jpg', 'application/pdf'];
-      if (file.mimeType && !validTypes.includes(file.mimeType)) {
-        Alert.alert('Error', 'Only JPG, JPEG, and PDF files are allowed');
-        return;
-      }
-
-      switch (type) {
-        case 'license':
-          setDriverLicense(file);
-          break;
-        case 'utility':
-          setUtilityBill(file);
-          break;
-        case 'inspection':
-          setInspectionDoc(file);
-          break;
-      }
-    } catch (err: any) {
-      if (err.message === 'cancelled') {
-        console.log('User cancelled document picker');
-      } else {
-        console.error('Document picker error:', err);
-        Alert.alert('Error', 'Failed to select document');
-      }
-    }
-  };
-  */
 
   const renderUploadButton = (type: DocumentType, document: any | null) => {
     const titles = {
@@ -82,16 +31,13 @@ const UploadDocument: React.FC = () => {
     return (
       <View style={styles.uploadContainer}>
         <Text style={styles.uploadTitle}>{titles[type]}</Text>
-        <TouchableOpacity 
-          style={styles.uploadButton}
-          // onPress={() => selectFile(type)} // Commented out functionality
-        >
+        <TouchableOpacity style={styles.uploadButton}>
           <Icon name="upload-file" size={30} color={colors.BLUE} style={styles.uploadIcon} />
           {document ? (
             <View style={styles.uploadedFile}>
               <Icon name="check-circle" size={24} color={colors.GREEN} />
               <Text style={styles.uploadedText} numberOfLines={1} ellipsizeMode="middle">
-                {document.name || "document.pdf"} {/* Fallback for UI demo */}
+                {document.name || 'document.pdf'}
               </Text>
             </View>
           ) : (
@@ -104,18 +50,12 @@ const UploadDocument: React.FC = () => {
   };
 
   const handleContinue = () => {
-    // Commented out validation
-    /*
-    if (!driverLicense || !utilityBill || !inspectionDoc) {
-      Alert.alert('Error', 'Please upload all required documents');
-      return;
-    }
-    */
     navigation.navigate('VehicleImage');
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
       <LinearGradient
         colors={['#18378B', '#2A60F1']}
         start={{ x: 0, y: 0 }}
@@ -126,12 +66,10 @@ const UploadDocument: React.FC = () => {
           <View style={styles.imageContainer}>
             <Image source={{ uri: 'https://picsum.photos/200/300?grayscale' }} style={styles.image} />
           </View>
-
           <View style={styles.textContainer}>
             <Text style={styles.text}>Hii John, Complete Your Profile!</Text>
           </View>
         </View>
-
         <View style={styles.caraousal}>
           <View style={styles.first}></View>
           <View style={styles.second}></View>
@@ -139,35 +77,38 @@ const UploadDocument: React.FC = () => {
         </View>
       </LinearGradient>
 
-      <View style={styles.uploadInfoContainer}>
-        <Text style={styles.uploadText}>Upload Documents</Text>
-        <View style={styles.blueline}></View>
-        <Text style={styles.uploadDescriptionText}>
-          We need to check that you're really you. It helps us fight fraud and keep the business secure.
-        </Text>
-        <Text style={styles.uploadSupportedFormatsText}>(Supported Formats: JPG, PDF, JPEG)</Text>
-      </View>
+      {/* Scrollable Upload Area */}
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.uploadInfoContainer}>
+          <Text style={styles.uploadText}>Upload Documents</Text>
+          <View style={styles.blueline}></View>
+          <Text style={styles.uploadDescriptionText}>
+            We need to check that you're really you. It helps us fight fraud and keep the business secure.
+          </Text>
+          <Text style={styles.uploadSupportedFormatsText}>(Supported Formats: JPG, PDF, JPEG)</Text>
+        </View>
 
-      {renderUploadButton('license', driverLicense)}
-      {renderUploadButton('utility', utilityBill)}
-      {renderUploadButton('inspection', inspectionDoc)}
+        {renderUploadButton('license', driverLicense)}
+        {renderUploadButton('utility', utilityBill)}
+        {renderUploadButton('inspection', inspectionDoc)}
+      </ScrollView>
 
+      {/* Fixed Continue Button */}
       <TouchableOpacity style={styles.continueButton} onPress={handleContinue}>
         <Text style={styles.continueButtonText}>Continue</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
-// Styles remain exactly the same as in your original code
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: colors.WHITE,
   },
   gradient: {
     width: '100%',
-    height: hp(30),
+    height: hp(28),
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomLeftRadius: wp(4),
@@ -227,6 +168,9 @@ const styles = StyleSheet.create({
     width: wp(16),
     borderRadius: wp(12),
   },
+  scrollContainer: {
+    paddingBottom: hp(4),
+  },
   uploadInfoContainer: {
     marginTop: hp(2),
     paddingHorizontal: wp(4),
@@ -246,10 +190,11 @@ const styles = StyleSheet.create({
   },
   uploadDescriptionText: {
     fontSize: fp(1.5),
-    color: colors.DARK_GREY,
+    color: colors.BODY_TEXT,
     marginBottom: hp(0.4),
-    fontFamily: typography.DMSans_Medium_500,
+    fontFamily: typography.DMSans_Regular_400,
     textAlign: 'center',
+    paddingHorizontal:wp(3)
   },
   uploadSupportedFormatsText: {
     fontSize: fp(1.2),
@@ -306,7 +251,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp(2),
     borderRadius: wp(2),
     marginHorizontal: wp(6),
-    marginTop: hp(4),
     marginBottom: hp(2),
     alignItems: 'center',
   },

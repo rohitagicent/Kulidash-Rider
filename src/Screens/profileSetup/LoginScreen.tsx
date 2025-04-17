@@ -132,7 +132,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    backgroundColor: colors.WHITE, 
   },
   frameContainer: {
     width: '100%',
@@ -167,16 +166,17 @@ const styles = StyleSheet.create({
     fontFamily:typography.DMSans_Bold_700,
     color: colors.BLACK, 
     textAlign: 'center',
-    marginBottom: hp(1),
+    marginBottom: hp(0.5),
     fontWeight:'700',
   },
   signInUnderline: {
-    height: 3,
+    height: hp(0.5),
     width: wp(12),
+    borderRadius:wp(12),
     backgroundColor: colors.BLUE,
     alignSelf: 'flex-start',
     marginBottom: hp(3),
-    marginLeft: hp(7),
+    marginLeft: hp(8.5),
   },
   inputContainer: {
     marginBottom: hp(3),
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: hp(2.9),
+    borderRadius: hp(2),
     padding: wp(2),
     backgroundColor: colors.WHITE,
   },

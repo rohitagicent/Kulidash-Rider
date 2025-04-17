@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from 'react-native';
 import { Svg, Path, Circle } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import OnboardingImage1 from "../Assets/iPhone.svg";
-import OnboardingImage2 from "../Assets/iPhone2.svg";
-import OnboardingImage3 from "../Assets/iPhone3.svg";
-import Group from "../Assets/Group.svg" 
-import BottomVector from "../Assets/Vector1.svg"
-import { hp, wp, fp } from '../utils/dimensions'; 
+import OnboardingImage1 from '../Assets/iPhone.svg';
+import OnboardingImage2 from '../Assets/iPhone2.svg';
+import OnboardingImage3 from '../Assets/iPhone3.svg';
+import Group from '../Assets/Group.svg';
+import BottomVector from '../Assets/Vector1.svg';
+import { hp, wp, fp } from '../utils/dimensions';
 import { typography } from '../../assets/fonts/typography';
 import { colors } from '../utils/colors';
 
-
 type RootStackParamList = {
-  LoginScreen: undefined; 
+  LoginScreen: undefined;
 };
 
 interface OnboardingSlide {
   id: number;
-  image: React.ReactNode; 
+  image: React.ReactNode;
   text: string;
   text2: string;
   subText: string;
@@ -28,24 +33,26 @@ interface OnboardingSlide {
 const onboardingSlides: OnboardingSlide[] = [
   {
     id: 1,
-    image: <OnboardingImage1 width={wp(65)} height={hp(60)} />, 
+    image: <OnboardingImage1 width={wp(60)} height={hp(60)} />,
     text: 'ACCEPT & DELIVER',
     text2: 'ORDERS!',
-    subText: "Get new delivery requests, pick them up, and earn easily within your preferred location."
+    subText:
+      'Get new delivery requests, pick them up, and earn easily within your preferred location.',
   },
   {
     id: 2,
-    image: <OnboardingImage2 width={wp(65)} height={hp(60)} />, 
+    image: <OnboardingImage2 width={wp(65)} height={hp(60)} />,
     text: 'GET PAID FAST &',
     text2: 'SECURELY!',
-    subText: "Receive payments directly to your bank account after every successful delivery."
+    subText:
+      'Receive payments directly to your bank account after every successful delivery.',
   },
   {
     id: 3,
     image: <OnboardingImage3 width={wp(65)} height={hp(60)} />,
     text: 'NAVIGATE WITH',
     text2: ' EASE!',
-    subText: "Get real-time order updates and optimized delivery routes."
+    subText: 'Get real-time order updates and optimized delivery routes.',
   },
 ];
 
@@ -75,23 +82,29 @@ const OnboardingCarousel: React.FC = () => {
         <View style={styles.imageContainer}>
           {onboardingSlides[currentSlide].image}
         </View>
-  
+
         <View style={styles.groupContainer}>
-          <Group width={wp(50)} height={wp(50)} />
+          <Group width={wp(60)} height={wp(60)} />
         </View>
       </View>
 
       <View style={styles.bottomSection}>
-        <BottomVector 
-          width={wp(100)} 
-          height={hp(50)} 
-          style={styles.vectorBackground}
+        <BottomVector
+          width={wp(110)}
+          height={hp(55)}
+          style={[
+            styles.vectorBackground,
+            { alignSelf: 'center', marginLeft: -wp(1) },
+          ]}
         />
-        
+
         <View style={styles.contentContainer}>
           <Text style={[styles.text, { fontSize: fp(3) }]}>
             {onboardingSlides[currentSlide].text}
-            <Text style={styles.text2}> {onboardingSlides[currentSlide].text2}</Text>
+            <Text style={styles.text2}>
+              {' '}
+              {onboardingSlides[currentSlide].text2}
+            </Text>
           </Text>
           <Text style={[styles.subText, { fontSize: fp(1.8) }]}>
             {onboardingSlides[currentSlide].subText}
@@ -99,12 +112,13 @@ const OnboardingCarousel: React.FC = () => {
         </View>
 
         <View style={styles.footer}>
-          <TouchableOpacity 
-            style={styles.skipButton}
-            onPress={handleSkip}
-          >
-            <Text style={[styles.skipText, { fontSize: fp(2) }]}>Skip</Text>
-          </TouchableOpacity>
+          {currentSlide < onboardingSlides.length - 1 ? (
+            <TouchableOpacity style={styles.skipButton} onPress={handleSkip}>
+              <Text style={[styles.skipText, { fontSize: fp(2) }]}>Skip</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.skipButton} /> // Empty View to maintain layout
+          )}
 
           <View style={styles.indicators}>
             {onboardingSlides.map((_, index) => (
@@ -132,8 +146,12 @@ const OnboardingCarousel: React.FC = () => {
               </Svg>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity onPress={handleJoinNow} style={styles.joinNowButton}>
-              <Text style={[styles.joinNowText, { fontSize: fp(2) }]}>Join Now</Text>
+            <TouchableOpacity
+              onPress={handleJoinNow}
+              style={styles.joinNowButton}>
+              <Text style={[styles.joinNowText, { fontSize: fp(2) }]}>
+                Join Now
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -145,7 +163,7 @@ const OnboardingCarousel: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.BLUE
+    backgroundColor: colors.BLUE,
   },
   topSection: {
     flex: 0.6,
@@ -165,8 +183,8 @@ const styles = StyleSheet.create({
   },
   groupContainer: {
     position: 'absolute',
-    top: hp(10), 
-    left: wp(35), 
+    top: hp(10),
+    left: wp(35),
     zIndex: 1,
   },
   contentContainer: {
@@ -176,21 +194,21 @@ const styles = StyleSheet.create({
     paddingTop: hp(8),
   },
   text: {
-    fontFamily:typography.DMSans_Bold_700,
+    fontFamily: typography.DMSans_Bold_700,
     color: colors.BLACK,
     textAlign: 'center',
     marginBottom: hp(2),
   },
   text2: {
     color: colors.BLUE,
-    fontFamily:typography.DMSans_Bold_700,
+    fontFamily: typography.DMSans_Bold_700,
   },
   subText: {
-    color: colors.GREY,
+    color: colors.BODY_TEXT,
     textAlign: 'center',
     marginTop: hp(0.8),
     lineHeight: hp(2.5),
-    fontFamily:typography.DMSans_Medium_500,
+    fontFamily: typography.DMSans_Medium_500,
   },
   footer: {
     flexDirection: 'row',
@@ -205,7 +223,7 @@ const styles = StyleSheet.create({
   },
   skipText: {
     color: 'gray',
-    fontFamily:typography.DMSans_Semibold_600,
+    fontFamily: typography.DMSans_Semibold_600,
   },
   indicators: {
     flex: 1,
@@ -237,7 +255,7 @@ const styles = StyleSheet.create({
   },
   joinNowText: {
     color: 'white',
-    fontFamily:typography.DMSans_Semibold_600,
+    fontFamily: typography.DMSans_Semibold_600,
   },
 });
 

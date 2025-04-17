@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,13 +13,23 @@ import {colors} from '../../utils/colors';
 import {fp, hp, wp} from '../../utils/dimensions';
 import {typography} from '../../../assets/fonts/typography';
 import Food from '../../Assets/food.svg';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
 
-const RideSummary = () => {
+type RootStackParamList = {
+  RideSummary: undefined;
+};
+
+type NavigationProp = NativeStackScreenProps<RootStackParamList, 'RideSummary'>['navigation'];
+
+const RideSummary: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
+
   return (
     <View style={styles.container}>
-      {/* Header */}
+      {/* Fixed Header */}
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon
             name="chevron-back"
             size={28}
@@ -31,100 +40,91 @@ const RideSummary = () => {
         <Text style={styles.headerText}>Ride Summary</Text>
       </View>
 
-      {/* Order Status + Delivery Time Combined */}
-      <View style={styles.statusDeliveryWrapper}>
-        <View style={styles.orderStatusContainer}>
-          <View style={styles.statusBox}>
-            <View style={styles.statusRow}>
-              <Icon2
-                name="clipboard-text-outline"
-                size={20}
-                color={colors.BLUE}
-              />
-              <View>
-                <Text style={styles.label}>Order ID</Text>
-                <Text style={styles.value}>#12345678</Text>
+      {/* Scrollable Content */}
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        {/* Order Status + Delivery Time */}
+        <View style={styles.statusDeliveryWrapper}>
+          <View style={styles.orderStatusContainer}>
+            <View style={styles.statusBox}>
+              <View style={styles.statusRow}>
+                <Icon2 name="clipboard-text-outline" size={20} color={colors.BLUE} />
+                <View>
+                  <Text style={styles.label}>Order ID</Text>
+                  <Text style={styles.value}>#12345678</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.statusBox}>
+              <View style={styles.statusRow}>
+                <Icon2 name="check-circle-outline" size={20} color={colors.BLUE} />
+                <View>
+                  <Text style={styles.label}>Status</Text>
+                  <Text style={styles.value}>Completed</Text>
+                </View>
               </View>
             </View>
           </View>
 
-          <View style={styles.statusBox}>
-            <View style={styles.statusRow}>
-              <Icon2
-                name="check-circle-outline"
-                size={20}
-                color={colors.BLUE}
-              />
-              <View>
-                <Text style={styles.label}>Status</Text>
-                <Text style={styles.value}>Completed</Text>
-              </View>
+          <View style={styles.deliveryTimeContainerCombined}>
+            <Icon2 name="clock-outline" size={16} color="green" />
+            <Text style={styles.deliveryText}>
+              Delivered on March 18, 2025, at 2:45 PM
+            </Text>
+          </View>
+        </View>
+
+        {/* Pickup & Drop-off Info */}
+        <View style={styles.pickupcontainer}>
+          <View style={styles.pickup}>
+            <Icon3 name="map-pin" size={20} color={colors.GREY} />
+            <Text style={styles.pickupText}>
+              Pickup: Gourmet Burge, 123 Food St.
+            </Text>
+          </View>
+          <View style={styles.pickup}>
+            <Icon3 name="map-pin" size={20} color={colors.GREY} />
+            <Text style={styles.pickupText}>
+              Drop-off: Alexei Vostok, 456 Home Rd.
+            </Text>
+          </View>
+          <View style={styles.distanceContainer}>
+            <View style={styles.subConatiner}>
+              <Icon name="compass-outline" size={20} color={colors.GREY} />
+              <Text style={styles.pickupText}>Distance: 5.2 Km</Text>
+            </View>
+            <View style={styles.subConatiner}>
+              <Icon3 name="map" size={20} color={colors.GREY} />
+              <Text style={styles.pickupText}>Map Preview</Text>
             </View>
           </View>
         </View>
 
-        {/* Delivery Time */}
-        <View style={styles.deliveryTimeContainerCombined}>
-          <Icon name="checkmark-circle" size={16} color="green" />
-          <Text style={styles.deliveryText}>
-            Delivered on March 18, 2025, at 2:45 PM
-          </Text>
-        </View>
-      </View>
-
-      {/* Pickup & Drop-off Info */}
-      <View style={styles.pickupcontainer}>
-        <View style={styles.pickup}>
-          <Icon3 name="map-pin" size={20} color={colors.GREY} />
-          <Text style={styles.pickupText}>
-            Pickup: Gourmet Burge, 123 Food St.
-          </Text>
-        </View>
-        <View style={styles.pickup}>
-          <Icon3 name="map-pin" size={20} color={colors.GREY} />
-          <Text style={styles.pickupText}>
-            Drop-off: Alexei Vostok, 456 Home Rd.
-          </Text>
-        </View>
-        <View style={styles.distanceContainer}>
-          <View style={styles.subConatiner}>
-            <Icon name="compass-outline" size={20} color={colors.GREY} />
-            <Text style={styles.pickupText}>Distance: 5.2 Km</Text>
+        {/* Earnings */}
+        <View style={styles.EarningConatiner}>
+          <View style={styles.BreakDown}>
+            <Text style={styles.EarningText}>Earning BreakDown</Text>
+            <Text style={styles.EarningText}>₦30</Text>
           </View>
-          <View style={styles.subConatiner}>
-            <Icon3 name="map" size={20} color={colors.GREY} />
-            <Text style={styles.pickupText}>Map Preview</Text>
+          <View style={styles.fare}>
+            <Text style={styles.baseText}>Base Fare</Text>
+            <Text style={styles.priceText}>₦10</Text>
+          </View>
+          <View style={styles.fare}>
+            <Text style={styles.baseText}>Distance fare</Text>
+            <Text style={styles.priceText}>₦10</Text>
+          </View>
+          <View style={styles.fare}>
+            <Text style={styles.baseText}>Tip</Text>
+            <Text style={styles.priceText}>₦10</Text>
           </View>
         </View>
-      </View>
 
-      {/* Earnings */}
-      <View style={styles.EarningConatiner}>
-        <View style={styles.BreakDown}>
-          <Text style={styles.EarningText}>Earning BreakDown</Text>
-          <Text style={styles.EarningText}>₦30</Text>
-        </View>
-        <View style={styles.fare}>
-          <Text style={styles.baseText}>Base Fare</Text>
-          <Text style={styles.priceText}>₦10</Text>
-        </View>
-        <View style={styles.fare}>
-          <Text style={styles.baseText}>Distance fare</Text>
-          <Text style={styles.priceText}>₦10</Text>
-        </View>
-        <View style={styles.fare}>
-          <Text style={styles.baseText}>Tip</Text>
-          <Text style={styles.priceText}>₦10</Text>
-        </View>
-      </View>
-
-      {/* Order Details */}
-      <View style={styles.orderDetailsContainer}>
-        <Text style={styles.sectionHeader}>Order Details</Text>
-
-        {[1, 2].map((item, index) => (
-          <View key={index}>
-            <View style={styles.itemRow}>
+        {/* Order Details */}
+        <View style={styles.orderDetailsContainer}>
+          <Text style={styles.sectionHeader}>Order Details</Text>
+          {[1, 2].map((item, index) => (
+            <View key={index} style={styles.itemRow}>
               <Text style={styles.itemIndex}>{item}</Text>
               <View style={styles.itemInfo}>
                 <Food width={wp(10)} height={wp(10)} />
@@ -134,9 +134,9 @@ const RideSummary = () => {
                 </View>
               </View>
             </View>
-          </View>
-        ))}
-      </View>
+          ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -148,23 +148,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F6F6F6',
   },
+  scrollContent: {
+    paddingBottom: hp(5),
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: wp(4),
     backgroundColor: colors.WHITE,
-    marginTop: hp(3),
+    borderBottomWidth: wp(0.2),
+    borderColor: colors.GREY,
+    zIndex: 1,
   },
   icon: {
     backgroundColor: colors.LIGHT_GREY,
     borderRadius: wp(2),
     padding: wp(1),
+    marginTop: hp(1),
   },
   headerText: {
     fontSize: fp(1.8),
     fontFamily: typography.DMSans_Semibold_600,
     color: colors.HEADING,
     marginLeft: wp(3),
+    marginTop: hp(1),
   },
   statusDeliveryWrapper: {
     backgroundColor: colors.WHITE,
@@ -287,8 +294,6 @@ const styles = StyleSheet.create({
     fontSize: fp(2),
     color: colors.TEXT_COLOR,
   },
-
-  // Order Details styles
   orderDetailsContainer: {
     backgroundColor: colors.WHITE,
     margin: wp(3),
@@ -304,20 +309,21 @@ const styles = StyleSheet.create({
   itemRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth:wp(0.5),
-    paddingVertical:wp(2),
-    paddingHorizontal:hp(1),
-    borderRadius:wp(2),
-    borderColor:colors.BORDER,
-    marginBottom:hp(2)
+    borderWidth: wp(0.5),
+    paddingVertical: wp(2),
+    paddingHorizontal: hp(1),
+    borderRadius: wp(2),
+    borderColor: colors.BORDER,
+    marginBottom: hp(2),
   },
   itemIndex: {
     width: wp(5),
     fontFamily: typography.DMSans_Medium_500,
     fontSize: fp(1.4),
     color: colors.WHITE,
-    backgroundColor:colors.BLUE,
-    borderRadius:wp(1),
+    backgroundColor: colors.BLUE,
+    borderRadius: wp(1),
+    textAlign: 'center',
   },
   itemInfo: {
     flexDirection: 'row',
@@ -336,11 +342,5 @@ const styles = StyleSheet.create({
     fontFamily: typography.DMSans_Regular_400,
     fontSize: fp(1.4),
     color: colors.TEXT_COLOR,
-  },
-  line: {
-    height: hp(0.1),
-    backgroundColor: colors.LIGHT_GREY,
-    marginVertical: hp(1),
-    marginLeft: wp(5),
   },
 });

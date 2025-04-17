@@ -18,6 +18,7 @@ import RiderNavigator from './RiderNavigator';
 import CongratulationsScreen from '../Screens/CongratulationsScreen';
 import MapScreen from '../Screens/MapScreen';
 import RideSummary from '../Screens/navigatorScreens/RideSummary';
+import MyProfile from '../Screens/AccountScreens/MyProfile';
 
 type RootStackParamList = {
   OnboardingScreen: undefined; 
@@ -34,6 +35,7 @@ type RootStackParamList = {
   CongratulationsScreen:undefined;
   MapScreen:undefined;
   RideSummary:undefined;
+  MyProfile:undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -110,6 +112,11 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen
           name="RideSummary"
           component={RideSummary}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="MyProfile"
+          component={MyProfile}
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

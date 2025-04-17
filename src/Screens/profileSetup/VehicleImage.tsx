@@ -21,7 +21,8 @@ const VehicleImage: React.FC = () => {
   const [rightImage, setRightImage] = useState<string>('');
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      {/* Fixed Header */}
       <LinearGradient
         colors={['#18378B', '#2A60F1']}
         start={{x: 0, y: 0}}
@@ -46,31 +47,37 @@ const VehicleImage: React.FC = () => {
         </View>
       </LinearGradient>
 
-      <View style={styles.uploadInfoContainer}>
-        <Text style={styles.uploadText}>Vehicle Images</Text>
-        <View style={styles.blueline}></View>
-        <Text style={styles.uploadDescriptionText}>
-          Please upload the front, back, and both sides of your vehicle.
-        </Text>
-        <Text style={styles.uploadSupportedFormatsText}>
-          (Supported Formats: JPG, PDF, JPEG)
-        </Text>
-      </View>
+      {/* Scrollable Upload Section */}
+      <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
+        <View style={styles.uploadInfoContainer}>
+          <Text style={styles.uploadText}>Vehicle Images</Text>
+          <View style={styles.blueline}></View>
+          <Text style={styles.uploadDescriptionText}>
+            Please upload the front, back, and both sides of your vehicle.
+          </Text>
+          <Text style={styles.uploadSupportedFormatsText}>
+            (Supported Formats: JPG, PDF, JPEG)
+          </Text>
+        </View>
 
-      {/* Upload Image Boxes */}
-      <View style={styles.imageUploadContainer}>
-        <ImageUploadBox label="Front Side" onPress={() => {}} />
-        <ImageUploadBox label="Back Side" onPress={() => {}} />
-        <ImageUploadBox label="Left Side" onPress={() => {}} />
-        <ImageUploadBox label="Right Side" onPress={() => {}} />
-      </View>
+        {/* Upload Image Boxes */}
+        <View style={styles.imageUploadContainer}>
+          <ImageUploadBox label="Front Side" onPress={() => {}} />
+          <ImageUploadBox label="Back Side" onPress={() => {}} />
+          <ImageUploadBox label="Left Side" onPress={() => {}} />
+          <ImageUploadBox label="Right Side" onPress={() => {}} />
+        </View>
+      </ScrollView>
 
-      <TouchableOpacity
-        style={styles.continueButton}
-        onPress={() => navigation.navigate('AllsetScreen')}>
-        <Text style={styles.continueButtonText}>Continue</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      {/* Fixed Button */}
+      <View style={styles.buttonWrapper}>
+        <TouchableOpacity
+          style={styles.continueButton}
+          onPress={() => navigation.navigate('AllsetScreen')}>
+          <Text style={styles.continueButtonText}>Continue</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -99,12 +106,12 @@ export default VehicleImage;
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     backgroundColor: colors.WHITE,
   },
   gradient: {
     width: '100%',
-    height: hp(30),
+    height: hp(28),
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomLeftRadius: wp(4),
@@ -165,9 +172,12 @@ const styles = StyleSheet.create({
     borderRadius: wp(12),
   },
 
+  scrollContainer: {
+    paddingHorizontal: wp(4),
+    paddingBottom: hp(12), // space for the button
+  },
   uploadInfoContainer: {
     marginTop: hp(2),
-    paddingHorizontal: wp(4),
     alignItems: 'center',
     borderStyle: 'dotted',
   },
@@ -179,9 +189,9 @@ const styles = StyleSheet.create({
     width: wp(16),
     height: hp(0.5),
     backgroundColor: colors.BLUE,
-    marginRight: hp(10),
     borderRadius: wp(12),
     marginBottom: hp(1),
+    marginRight:wp(21)
   },
   uploadDescriptionText: {
     fontSize: fp(1.5),
@@ -198,7 +208,6 @@ const styles = StyleSheet.create({
   },
   imageUploadContainer: {
     marginTop: hp(3),
-    paddingHorizontal: wp(4),
   },
   uploadBox: {
     borderWidth: wp(0.5),
@@ -207,8 +216,7 @@ const styles = StyleSheet.create({
     marginRight: wp(2),
     marginLeft: wp(2),
     paddingVertical: hp(2),
-
-    marginBottom: hp(1),
+    marginBottom: hp(1.5),
     borderRadius: wp(2),
     alignItems: 'center',
   },
@@ -218,9 +226,10 @@ const styles = StyleSheet.create({
     color: colors.BLACK,
     textAlign: 'left',
     marginLeft: wp(4),
+    marginBottom: hp(0.5),
   },
   icon: {
-   marginBottom:hp(0.3)
+    marginBottom: hp(0.3),
   },
   uploadBoxText: {
     fontSize: fp(1.6),
@@ -234,13 +243,16 @@ const styles = StyleSheet.create({
     color: colors.BLACK,
     textAlign: 'left',
   },
+  buttonWrapper: {
+    position: 'absolute',
+    bottom: hp(2),
+    width: '100%',
+    paddingHorizontal: wp(6),
+  },
   continueButton: {
     backgroundColor: colors.BLUE,
     paddingVertical: hp(2),
     borderRadius: wp(2),
-    marginHorizontal: wp(6),
-    marginTop: hp(2),
-    marginBottom: hp(2),
     alignItems: 'center',
   },
   continueButtonText: {

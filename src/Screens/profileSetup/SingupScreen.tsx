@@ -8,7 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  ScrollView
 } from 'react-native';
 import React, { useState } from 'react';
 import { hp, wp, fp } from '../../utils/dimensions';
@@ -58,8 +59,8 @@ const SignupScreen: React.FC = () => {
   const [phoneError, setPhoneError] = useState<string>('');
   const [emailError, setEmailError] = useState<string>('');
 
-  const [isPhoneVerified, setIsPhoneVerified] = useState<boolean>(false); // Track phone verification status
-  const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false); // Track email verification status
+  const [isPhoneVerified, setIsPhoneVerified] = useState<boolean>(false);
+  const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
 
   const isButtonDisabled =
     !name.trim() ||
@@ -81,29 +82,21 @@ const SignupScreen: React.FC = () => {
     setIsEmailModalVisible(!isEmailModalVisible);
   };
 
-  // Update the phone number validation
   const handlePhoneNumberChange = (text: string) => {
-    // Allow only numeric values
     if (/^\d+$/.test(text)) {
       setPhoneNumber(text);
-      setPhoneError(''); // Clear error if input is valid
-      if (text.trim()) {
-        setIsPhoneVerifyEnabled(true);
-      } else {
-        setIsPhoneVerifyEnabled(false);
-      }
+      setPhoneError('');
+      setIsPhoneVerifyEnabled(!!text.trim());
     } else {
       setPhoneError('Only numeric characters are allowed');
       setIsPhoneVerifyEnabled(false);
     }
   };
 
-  // Update the email validation to accept only Gmail addresses
   const handleEmailChange = (text: string) => {
-    // Check if the email ends with @gmail.com
     if (/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(text)) {
       setEmail(text);
-      setEmailError(''); // Clear error if input is valid
+      setEmailError('');
       setIsEmailVerifyEnabled(true);
     } else {
       setEmail(text);
@@ -112,207 +105,219 @@ const SignupScreen: React.FC = () => {
     }
   };
 
-  // Handle OTP verification for Phone
   const handlePhoneOtpVerified = () => {
     setIsPhoneVerified(true);
-    togglePhoneModal(); // Close the phone modal
+    togglePhoneModal();
   };
 
-  // Handle OTP verification for Email
   const handleEmailOtpVerified = () => {
-    setIsEmailVerified(true); // Mark email as verified
-    toggleEmailModal(); // Close the email modal
+    setIsEmailVerified(true);
+    toggleEmailModal();
   };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <View style={styles.frameContainer}>
-            <LoginFrame width={width} height={hp(38)} style={styles.Frame} />
-
-            <Logo width={wp(40)} height={hp(10)} style={styles.logo} />
-
-            <Text style={styles.welcomeText}>
-              Welcome to Kulidash! {'\n'}Just A Few Steps To Complete Your Profile
-            </Text>
-          </View>
-
-          <View style={styles.content}>
-            <Text style={styles.signInText}>Create Account</Text>
-
-            <View style={styles.signInUnderline} />
-
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Your Name</Text>
-              <View style={styles.inputWrapper}>
-                <View style={styles.inputIconContainer}>
-                  <Icon name="account" size={24} color={colors.BLUE} />
-                </View>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter Name"
-                  placeholderTextColor={colors.GREY}
-                  value={name}
-                  onChangeText={setName}
-                />
-              </View>
-            </View>
-
-            <View style={styles.inputContainer}>
-              <View style={styles.subText}>
-                <Text style={styles.label}>Phone Number</Text>
-                <TouchableOpacity
-                  onPress={togglePhoneModal}
-                  disabled={!isPhoneVerifyEnabled}>
-                  <Text
-                    style={[
-                      styles.verifyText,
-                      isPhoneVerified
-                        ? { color: colors.GREEN }
-                        : { color: colors.BLUE },
-                    ]}>
-                    {isPhoneVerified ? 'Verified' : 'Verify'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
-              <View style={styles.inputWrapper}>
-                <View style={styles.inputIconContainer}>
-                  <Icon3 name="mobile1" size={24} color={colors.BLUE} />
-                </View>
-                <TouchableOpacity
-                  style={styles.countryCodeContainer}
-                  onPress={() => setCountryPickerVisible(true)}>
-                  <Text style={styles.countryCodeText}>+{countryCode}</Text>
-                  <AntDesign
-                    name="down"
-                    size={fp(2)}
-                    color={'#818181'}
-                    style={styles.dropdownIcon}
-                  />
-                </TouchableOpacity>
-                <CountryPicker
-                  countryCode={country?.cca2 || 'US'}
-                  withFilter
-                  withFlag
-                  withCallingCode
-                  withAlphaFilter
-                  withCallingCodeButton
-                  withEmoji
-                  visible={countryPickerVisible}
-                  onSelect={onSelectCountry}
-                  onClose={() => setCountryPickerVisible(false)}
-                  containerButtonStyle={{ display: 'none' }}
-                />
-                <TextInput
-                  style={[styles.input, { flex: 2 }]}
-                  placeholder="Enter Phone Number"
-                  placeholderTextColor={colors.GREY}
-                  value={phoneNumber}
-                  onChangeText={handlePhoneNumberChange}
-                  keyboardType="phone-pad"
-                />
-              </View>
-              {phoneError ? (
-                <Text style={styles.errorText}>{phoneError}</Text>
-              ) : null}
-            </View>
-
-            <View style={styles.inputContainer}>
-              <View style={styles.subText}>
-                <Text style={styles.label}>Email</Text>
-                <TouchableOpacity
-                  onPress={toggleEmailModal}
-                  disabled={!isEmailVerifyEnabled}>
-                  <Text
-                    style={[
-                      styles.verifyText,
-                      isEmailVerified
-                        ? { color: colors.GREEN }
-                        : { color: colors.BLUE },
-                    ]}>
-                    {isEmailVerified ? 'Verified' : 'Verify'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.inputWrapper}>
-                <View style={styles.inputIconContainer}>
-                  <Icon name="email" size={24} color={colors.BLUE} />
-                </View>
-                <TextInput
-                  style={[styles.input, { flex: 2 }]}
-                  placeholder="Enter Email"
-                  placeholderTextColor={colors.GREY}
-                  value={email}
-                  onChangeText={handleEmailChange}
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                />
-              </View>
-              {emailError ? (
-                <Text style={styles.errorText}>{emailError}</Text>
-              ) : null}
-            </View>
-
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Preferred Working Area</Text>
-              <View style={styles.inputWrapper}>
-                <View style={styles.inputIconContainer}>
-                  <Icon2 name="location-sharp" size={24} color={colors.BLUE} />
-                </View>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter Preferred Working Area"
-                  placeholderTextColor={colors.GREY}
-                  value={preferredArea}
-                  onChangeText={setPreferredArea}
-                />
-              </View>
-            </View>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate('UploadImageScreen')}
-              style={[
-                styles.continueButton,
-                isButtonDisabled ? styles.buttonDisabled : styles.buttonEnabled,
-              ]}
-              disabled={isButtonDisabled}>
-              <Text
-                style={[
-                  styles.continueButtonText,
-                  isButtonDisabled && { color: colors.LIGHT_GREY_TEXT },
-                ]}>
-                Continue
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.container}>
+            <View style={styles.frameContainer}>
+              <LoginFrame width={width} height={hp(38)} style={styles.Frame} />
+              <Logo width={wp(40)} height={hp(10)} style={styles.logo} />
+              <Text style={styles.welcomeText}>
+                Welcome to Kulidash! {'\n'}Just A Few Steps To Complete Your Profile
               </Text>
-            </TouchableOpacity>
-
-            <View style={styles.signUpContainer}>
-              <Text style={styles.signUpText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-                <Text style={styles.signUpLink}>Login</Text>
-              </TouchableOpacity>
             </View>
+
+            <View style={styles.content}>
+              <Text style={styles.signInText}>Create Account</Text>
+              <View style={styles.signInUnderline} />
+
+              {/* Name Input */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Your Name</Text>
+                <View style={styles.inputWrapper}>
+                  <View style={styles.inputIconContainer}>
+                    <Icon name="account" size={24} color={colors.BLUE} />
+                  </View>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter Name"
+                    placeholderTextColor={colors.GREY}
+                    value={name}
+                    onChangeText={setName}
+                  />
+                </View>
+              </View>
+
+              {/* Phone Number Input */}
+              <View style={styles.inputContainer}>
+                <View style={styles.subText}>
+                  <Text style={styles.label}>Phone Number</Text>
+                  <TouchableOpacity
+                    onPress={togglePhoneModal}
+                    disabled={!isPhoneVerifyEnabled}
+                  >
+                    <Text
+                      style={[
+                        styles.verifyText,
+                        isPhoneVerified
+                          ? { color: colors.GREEN }
+                          : { color: colors.BLUE },
+                      ]}
+                    >
+                      {isPhoneVerified ? 'Verified' : 'Verify'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <View style={styles.inputIconContainer}>
+                    <Icon3 name="mobile1" size={24} color={colors.BLUE} />
+                  </View>
+                  <TouchableOpacity
+                    style={styles.countryCodeContainer}
+                    onPress={() => setCountryPickerVisible(true)}
+                  >
+                    <Text style={styles.countryCodeText}>+{countryCode}</Text>
+                    <AntDesign
+                      name="down"
+                      size={fp(2)}
+                      color={'#818181'}
+                      style={styles.dropdownIcon}
+                    />
+                  </TouchableOpacity>
+                  <CountryPicker
+                    countryCode={country?.cca2 || 'US'}
+                    withFilter
+                    withFlag
+                    withCallingCode
+                    withAlphaFilter
+                    withCallingCodeButton
+                    withEmoji
+                    visible={countryPickerVisible}
+                    onSelect={onSelectCountry}
+                    onClose={() => setCountryPickerVisible(false)}
+                    containerButtonStyle={{ display: 'none' }}
+                  />
+                  <TextInput
+                    style={[styles.input, { flex: 2 }]}
+                    placeholder="Enter Phone Number"
+                    placeholderTextColor={colors.GREY}
+                    value={phoneNumber}
+                    onChangeText={handlePhoneNumberChange}
+                    keyboardType="phone-pad"
+                  />
+                </View>
+                {phoneError ? <Text style={styles.errorText}>{phoneError}</Text> : null}
+              </View>
+
+              {/* Email Input */}
+              <View style={styles.inputContainer}>
+                <View style={styles.subText}>
+                  <Text style={styles.label}>Email</Text>
+                  <TouchableOpacity
+                    onPress={toggleEmailModal}
+                    disabled={!isEmailVerifyEnabled}
+                  >
+                    <Text
+                      style={[
+                        styles.verifyText,
+                        isEmailVerified
+                          ? { color: colors.GREEN }
+                          : { color: colors.BLUE },
+                      ]}
+                    >
+                      {isEmailVerified ? 'Verified' : 'Verify'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={styles.inputWrapper}>
+                  <View style={styles.inputIconContainer}>
+                    <Icon name="email" size={24} color={colors.BLUE} />
+                  </View>
+                  <TextInput
+                    style={[styles.input, { flex: 2 }]}
+                    placeholder="Enter Email"
+                    placeholderTextColor={colors.GREY}
+                    value={email}
+                    onChangeText={handleEmailChange}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                  />
+                </View>
+                {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+              </View>
+
+              {/* Preferred Area Input */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Preferred Working Area</Text>
+                <View style={styles.inputWrapper}>
+                  <View style={styles.inputIconContainer}>
+                    <Icon2 name="location-sharp" size={24} color={colors.BLUE} />
+                  </View>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter Preferred Working Area"
+                    placeholderTextColor={colors.GREY}
+                    value={preferredArea}
+                    onChangeText={setPreferredArea}
+                  />
+                </View>
+              </View>
+
+              {/* Continue Button */}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('UploadImageScreen')}
+                style={[
+                  styles.continueButton,
+                  isButtonDisabled ? styles.buttonDisabled : styles.buttonEnabled,
+                ]}
+                disabled={isButtonDisabled}
+              >
+                <Text
+                  style={[
+                    styles.continueButtonText,
+                    isButtonDisabled && { color: colors.LIGHT_GREY_TEXT },
+                  ]}
+                >
+                  Continue
+                </Text>
+              </TouchableOpacity>
+
+              <View style={styles.signUpContainer}>
+                <Text style={styles.signUpText}>Don't have an account? </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
+                  <Text style={styles.signUpLink}>Login</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            {/* Modals */}
+            <Modal
+              isVisible={isPhoneModalVisible}
+              onBackdropPress={togglePhoneModal}
+              onBackButtonPress={togglePhoneModal}
+            >
+              <PhoneVerify onVerifyOtp={handlePhoneOtpVerified} />
+            </Modal>
+
+            <Modal
+              isVisible={isEmailModalVisible}
+              onBackdropPress={toggleEmailModal}
+              onBackButtonPress={toggleEmailModal}
+            >
+              <MailVerify onVerifyOtp={handleEmailOtpVerified} />
+            </Modal>
           </View>
-
-          <Modal
-            isVisible={isPhoneModalVisible}
-            onBackdropPress={togglePhoneModal}
-            onBackButtonPress={togglePhoneModal}>
-            <PhoneVerify onVerifyOtp={handlePhoneOtpVerified} />
-          </Modal>
-
-          {/* Email Verification Modal */}
-          <Modal
-            isVisible={isEmailModalVisible}
-            onBackdropPress={toggleEmailModal}
-            onBackButtonPress={toggleEmailModal}>
-            <MailVerify onVerifyOtp={handleEmailOtpVerified} />
-          </Modal>
-        </View>
+        </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -321,10 +326,10 @@ const SignupScreen: React.FC = () => {
 export default SignupScreen;
 
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.WHITE,
   },
   errorText: {
     color: colors.RED,
@@ -365,15 +370,16 @@ const styles = StyleSheet.create({
     fontFamily: typography.DMSans_Bold_700,
     color: colors.BLACK,
     textAlign: 'center',
-    marginBottom: hp(0.8),
+    marginBottom: hp(0.2),
   },
   signInUnderline: {
-    height: 3,
-    width: '24%',
+    height: hp(0.5),
+    width: wp(15),
+    borderRadius:wp(12),
     backgroundColor: colors.BLUE,
     alignSelf: 'flex-start',
-    marginBottom: hp(2),
-    marginLeft: hp(10.6),
+    marginBottom: hp(3),
+    marginLeft: hp(12),
   },
   inputContainer: {
     marginBottom: hp(2),
@@ -390,7 +396,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ddd',
-    borderRadius: wp(6),
+    borderRadius: wp(4),
     padding: wp(2),
     backgroundColor: colors.WHITE,
   },

@@ -134,11 +134,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: wp(6),
     paddingVertical: hp(3),
     paddingHorizontal: wp(5),
-    marginBottom: hp(5),
+    marginBottom: hp(8),
   },
   dragHandle: {
     position: 'absolute',
-    top: hp(-2.8),
+    top: hp(-2.4),
     alignSelf: 'center',
     backgroundColor: colors.WHITE,
     borderRadius: wp(10),

@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Tick from "../Assets/tick.svg";
 import { colors } from '../utils/colors';
 import { fp, hp, wp } from '../utils/dimensions';
+import { typography } from '../../assets/fonts/typography';
 
 interface PhoneVerifyProps {
   onVerifyOtp: () => void; 
@@ -57,10 +58,10 @@ const PhoneVerify: React.FC<PhoneVerifyProps> = ({ onVerifyOtp }) => {
 
   return (
     <View style={styles.modalContent}>
-      <Tick width={97} height={97} />
+      <Tick width={100} height={100} />
       <View style={styles.heading}>
-        <Text style={styles.VerifyText}>Verify your Contact Info</Text>
-        <Text style={styles.subText}>Enter Your 6 digit verification code sent to ********687</Text>
+        <Text style={styles.VerifyText}>Verify Your Contact Info</Text>
+        <Text style={styles.subText}>Enter Your 6 Digit Verification Code Sent To ********687</Text>
       </View>
 
       <View style={styles.otpContainer}>
@@ -79,7 +80,7 @@ const PhoneVerify: React.FC<PhoneVerifyProps> = ({ onVerifyOtp }) => {
       </View>
 
       {isOtpIncorrect && (
-        <Text style={styles.errorText}>Wrong OTP</Text> // Display error message
+        <Text style={styles.errorText}>Wrong OTP</Text> 
       )}
 
       <View style={styles.resendView}>
@@ -87,7 +88,7 @@ const PhoneVerify: React.FC<PhoneVerifyProps> = ({ onVerifyOtp }) => {
         <Text style={[styles.codeText, styles.resendText]}>Resend</Text>
       </View>
       <View>
-        <Text style={styles.sent}>Resent in 2 min</Text>
+        <Text style={styles.sent}>Resend in 2 min</Text>
       </View>
     </View>
   );
@@ -100,32 +101,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.WHITE,
-    padding: wp(4),
+    padding: wp(8),
     borderRadius: 10,
   },
   heading: {
     alignItems: 'center',
   },
   VerifyText: {
-    fontSize: fp(2.3),
-    fontWeight: '800',
+    fontSize: fp(2.5),
+    fontFamily:typography.DMSans_Bold_700,
     marginTop: hp(2),
     color: colors.BLACK,
   },
   subText: {
-    fontSize: fp(1.2),
-    fontWeight: '400',
+    paddingHorizontal:wp(4),
+    marginTop:wp(1),
+    textAlign:"center",
+    fontSize: fp(1.4),
+    fontFamily: typography.Manrope_regular_400,
+    color:'#777777'
   },
   otpContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     marginTop: hp(2),
-    width: wp(75),
+    width: wp(90),
   },
   otpInput: {
-    width: wp(10),
-    height: wp(10),
+    width: wp(12),
+    height: wp(12),
     backgroundColor: '#5151511A',
     borderRadius: 8,
     fontSize: fp(2),
@@ -141,19 +146,22 @@ const styles = StyleSheet.create({
   },
   codeText: {
     fontSize: fp(1.4),
-    color: colors.GREY,
+    color: colors.HEADING,
+    fontFamily:typography.Manrope_medium_500,
   },
   resendText: {
     color: colors.BLUE,
     fontSize: fp(1.4),
+    fontFamily:typography.Manrope_medium_500,
   },
   sent: {
     fontSize: fp(1.4),
-    color: colors.GREY,
+    color: '#51515199',
+    fontFamily:typography.DMSans_Regular_400,
   },
   errorText: {
     fontSize: fp(1.4),
-    color: colors.LIGHT_GREY, 
+    color: colors.RED, 
     marginTop: hp(1),
   },
 });

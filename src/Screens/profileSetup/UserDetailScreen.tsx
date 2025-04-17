@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-nativ
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/MaterialIcons';
-import { hp, wp } from '../../utils/dimensions'; 
+import { fp, hp, wp } from '../../utils/dimensions'; 
 import { colors } from '../../utils/colors'; 
 import { typography } from '../../../assets/fonts/typography';
 import { useNavigation } from '@react-navigation/native';  
@@ -70,7 +70,7 @@ const UserDetailScreen: React.FC = () => {
           <Text style={styles.label}>Phone Number</Text>
           <View style={styles.inputWrapper}>
             <View style={styles.inputIconContainer}>
-              <Icon name="phone" size={24} color={colors.BLUE} />
+              <Icon name="cellphone" size={24} color={colors.BLUE} />
             </View>
             <TextInput
               style={[styles.input, { flex: 2 }]}
@@ -137,8 +137,8 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: hp(5.5),
-    left: hp(2.4),
+    top: hp(4),
+    left: hp(2),
     padding: hp(1),
   },
   imageContainer: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   changePhotoText: {
     color: colors.BLUE, 
-    fontSize: 16,
+    fontSize: fp(2),
     fontFamily: typography.DMSans_Medium_500
   },
   formContainer: {

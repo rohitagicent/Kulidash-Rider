@@ -83,8 +83,8 @@ const HomeScreen: React.FC = () => {
         },
         {
           enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 10000,
+          timeout: 30000,
+          maximumAge: 20000,
         },
       );
     };
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    paddingTop: hp(8),
+    paddingTop: hp(4),
     paddingHorizontal: hp(3),
     paddingBottom: hp(2),
     flexDirection: 'row',

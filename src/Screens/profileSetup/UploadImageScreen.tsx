@@ -163,14 +163,14 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: hp(5.5),
-    left: hp(2.5),
+    top: hp(3),
+    left: hp(2),
     padding: hp(0.8),
   },
   imageSection: {
     alignItems: 'center',
     marginVertical: hp(4),
-    marginTop: hp(16),
+    marginTop: hp(14),
   },
   uploadImageContainer: {
     width: hp(25),
@@ -206,7 +206,6 @@ const styles = StyleSheet.create({
   },
   headingText: {
     alignItems: 'center',
-    marginBottom: hp(1.3),
   },
   instructionsTitle: {
     fontSize: 18,
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
   },
   titleLine: {
     width: wp(28),
-    height: 3,
+    height: 2,
     backgroundColor: colors.GREEN,
     marginBottom: hp(1),
   },
@@ -235,7 +234,7 @@ const styles = StyleSheet.create({
   },
   uploadButtonContainer: {
     alignItems: 'center',
-    marginTop: hp(8),
+    marginTop: hp(10),
   },
   uploadButton: {
     backgroundColor: colors.BLUE,

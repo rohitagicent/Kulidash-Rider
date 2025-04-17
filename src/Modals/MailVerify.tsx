@@ -3,15 +3,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import Tick from "../Assets/tick.svg";
 import { colors } from '../utils/colors';
 import { fp, hp, wp } from '../utils/dimensions';
+import { typography } from '../../assets/fonts/typography';
 
 interface MailVerifyProps {
-  onVerifyOtp: () => void;  // Function to close the modal after OTP verification
+  onVerifyOtp: () => void; 
 }
 
 const mailVerify: React.FC<MailVerifyProps> = ({ onVerifyOtp }) => {
   const [otp, setOtp] = useState<number[]>([0, 0, 0, 0, 0, 0]);
   const [isOtpVerified, setIsOtpVerified] = useState<boolean>(false);
-  const [isOtpIncorrect, setIsOtpIncorrect] = useState<boolean>(false); // Track incorrect OTP
+  const [isOtpIncorrect, setIsOtpIncorrect] = useState<boolean>(false); 
   
   const inputRefs = useRef<(TextInput | null)[]>([]);
 
@@ -25,22 +26,19 @@ const mailVerify: React.FC<MailVerifyProps> = ({ onVerifyOtp }) => {
     const numericValue = parseInt(value, 10);
 
     if (value === '') {
-      // Handle backspace: reset the OTP digit and focus on the previous input field
+
       const newOtp = [...otp];
       newOtp[index] = 0;
       setOtp(newOtp);
 
-      // Move focus to the previous input if backspace is pressed
       if (index > 0) {
         inputRefs.current[index - 1]?.focus();
       }
     } else if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 9) {
-      // Update OTP array only if the value is valid
       const newOtp = [...otp];
       newOtp[index] = numericValue;
       setOtp(newOtp);
 
-      // Move focus to the next input field if a valid digit is entered
       if (value && index < otp.length - 1) {
         inputRefs.current[index + 1]?.focus();
       }
@@ -54,7 +52,7 @@ const mailVerify: React.FC<MailVerifyProps> = ({ onVerifyOtp }) => {
       onVerifyOtp(); 
     } else {
       setIsOtpVerified(false);
-      setIsOtpIncorrect(true); // Set error state on failure
+      setIsOtpIncorrect(true); 
     }
   };
 
@@ -64,7 +62,7 @@ const mailVerify: React.FC<MailVerifyProps> = ({ onVerifyOtp }) => {
 
       <View style={styles.heading}>
         <Text style={styles.VerifyText}>Verify your Contact Info</Text>
-        <Text style={styles.subText}>Enter Your 6 digit verification code sent to *****@gmail.com</Text>
+        <Text style={styles.subText}>Enter Your 6 Digit Verification Code Sent To *****@gmail.com</Text>
       </View>
 
       <View style={styles.otpContainer}>
@@ -97,9 +95,9 @@ const mailVerify: React.FC<MailVerifyProps> = ({ onVerifyOtp }) => {
           style={[
             styles.codeText, 
             styles.resendText, 
-            { color: isOtpVerified ? colors.GREY : colors.BLUE } // Change color when OTP is verified
+            { color: isOtpVerified ? colors.GREY : colors.BLUE } 
           ]}
-          onPress={isOtpVerified ? () => {} : handleEmailOtpVerified} // Only allow resend if OTP is not verified
+          onPress={isOtpVerified ? () => {} : handleEmailOtpVerified} 
         >
           {isOtpVerified ? 'Resent' : 'Resend'}
         </Text>
@@ -119,32 +117,36 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.WHITE,
-    padding: wp(4),
+    padding: wp(8),
     borderRadius: 10,
   },
   heading: {
     alignItems: 'center',
   },
   VerifyText: {
-    fontSize: fp(2.3),
-    fontWeight: '800',
+    fontSize: fp(2.5),
+    fontFamily:typography.DMSans_Bold_700,
     marginTop: hp(2),
     color: colors.BLACK,
   },
   subText: {
-    fontSize: fp(1.2),
-    fontWeight: '400',
+    paddingHorizontal:wp(4),
+    marginTop:wp(1),
+    textAlign:"center",
+    fontSize: fp(1.4),
+    fontFamily: typography.Manrope_regular_400,
+    color:'#777777'
   },
   otpContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     marginTop: hp(2),
-    width: wp(75),
+    width: wp(90),
   },
   otpInput: {
-    width: wp(10),
-    height: wp(10),
+    width: wp(12),
+    height: wp(12),
     backgroundColor: '#5151511A',
     borderRadius: 8,
     fontSize: fp(2),
@@ -160,18 +162,22 @@ const styles = StyleSheet.create({
   },
   codeText: {
     fontSize: fp(1.4),
-    color: colors.GREY,
+    color: colors.HEADING,
+    fontFamily:typography.Manrope_medium_500,
   },
   resendText: {
+    color: colors.BLUE,
     fontSize: fp(1.4),
+    fontFamily:typography.Manrope_medium_500,
   },
   sent: {
     fontSize: fp(1.4),
-    color: colors.GREY,
+    color: '#51515199',
+    fontFamily:typography.DMSans_Regular_400,
   },
   errorText: {
     fontSize: fp(1.4),
-    color: colors.LIGHT_BLUE,
+    color: colors.RED, 
     marginTop: hp(1),
   },
 });

@@ -1,22 +1,34 @@
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { fp, hp, wp } from '../../utils/dimensions';
 import { typography } from '../../../assets/fonts/typography';
 import { colors } from '../../utils/colors';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from '@react-navigation/native';  
+import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
-  UploadDocument: undefined
+  UploadDocument: undefined;
 };
 
 const vehicleTypes = [
   { id: '1', name: 'Car' },
   { id: '2', name: 'Bike' },
   { id: '3', name: 'Scooter' },
-  { id: '4', name: 'Auto' }
+  { id: '4', name: 'Auto' },
 ];
 
 const currentYear = new Date().getFullYear();
@@ -41,152 +53,162 @@ const VehicleInfoScreen: React.FC = () => {
     setShowYearDropdown(false);
   };
 
-  const toggleVehicleTypeDropdown = () => {
-    setShowVehicleTypeDropdown(prevState => !prevState);
-  };
-
-  const toggleYearDropdown = () => {
-    setShowYearDropdown(prevState => !prevState);
-  };
-
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={['#18378B', '#2A60F1']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.5 }}
-        style={styles.gradient}
-      >
-        <View style={styles.row}>
-          {/* Image View */}
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: 'https://picsum.photos/200/300?grayscale' }}
-              style={styles.image}
-            />
-          </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.container}>
+            <LinearGradient
+              colors={['#18378B', '#2A60F1']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 0, y: 0.5 }}
+              style={styles.gradient}
+            >
+              <View style={styles.row}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{ uri: 'https://picsum.photos/200/300?grayscale' }}
+                    style={styles.image}
+                  />
+                </View>
+                <View style={styles.textContainer}>
+                  <Text style={styles.text}>Hii John, Complete Your Profile!</Text>
+                </View>
+              </View>
 
-          {/* Text View */}
-          <View style={styles.textContainer}>
-            <Text style={styles.text}>Hii John, Complete Your Profile!</Text>
-          </View>
-        </View>
+              <View style={styles.caraousal}>
+                <View style={styles.first}></View>
+                <View style={styles.second}></View>
+                <View style={styles.third}></View>
+              </View>
+            </LinearGradient>
 
-        {/* Carousel */}
-        <View style={styles.caraousal}>
-          <View style={styles.first}></View>
-          <View style={styles.second}></View>
-          <View style={styles.third}></View>
-        </View>
-      </LinearGradient>
+            <View style={styles.heading}>
+              <Text style={styles.headingText}>Vehicle Information</Text>
+            </View>
+            <View style={styles.line}></View>
 
-      <View style={styles.heading}>
-        <Text style={styles.headingText}>Vehicle Information</Text>
-      </View>
-      <View style={styles.line}></View>
-
-      <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Vehicle Type</Text>
-          <TouchableOpacity 
-            style={styles.inputWrapper}
-            onPress={toggleVehicleTypeDropdown}
-          >
-            <TextInput
-              style={styles.input}
-              placeholder="Select Vehicle Type"
-              value={vehicleType}
-              editable={false}
-              pointerEvents="none"
-            />
-            <AntDesign name={showVehicleTypeDropdown ? "up" : "down"} size={20} color={colors.GREY} style={styles.icon} />
-          </TouchableOpacity>
-
-          {/* Vehicle Type Dropdown */}
-          {showVehicleTypeDropdown && (
-            <FlatList
-              data={vehicleTypes}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
+            <View style={styles.formContainer}>
+              {/* Vehicle Type */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Vehicle Type</Text>
                 <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => handleSelectVehicleType(item.name)}
+                  style={styles.inputWrapper}
+                  onPress={() => setShowVehicleTypeDropdown(prev => !prev)}
                 >
-                  <Text style={styles.dropdownItemText}>{item.name}</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select Vehicle Type"
+                    placeholderTextColor={colors.BODY_TEXT}
+                    value={vehicleType}
+                    editable={false}
+                    pointerEvents="none"
+                  />
+                  <AntDesign
+                    name={showVehicleTypeDropdown ? 'up' : 'down'}
+                    size={20}
+                    color={colors.GREY}
+                    style={styles.icon}
+                  />
                 </TouchableOpacity>
-              )}
-              ItemSeparatorComponent={() => <View style={styles.separator} />}
-              style={styles.dropdown}
-            />
-          )}
-        </View>
+                {showVehicleTypeDropdown && (
+                  <ScrollView style={styles.dropdown}>
+                    {vehicleTypes.map((item) => (
+                      <TouchableOpacity
+                        key={item.id}
+                        style={styles.dropdownItem}
+                        onPress={() => handleSelectVehicleType(item.name)}
+                      >
+                        <Text style={styles.dropdownItemText}>{item.name}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                )}
+              </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Make & Modal</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter make and modal"
-              value={make}
-              onChangeText={setMake}
-            />
-          </View>
-        </View>
+              {/* Make */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Make & Modal</Text>
+                <View style={styles.inputWrapper}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter make and modal"
+                    placeholderTextColor={colors.BODY_TEXT}
+                    value={make}
+                    onChangeText={setMake}
+                  />
+                </View>
+              </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Year</Text>
-          <TouchableOpacity
-            style={styles.inputWrapper}
-            onPress={toggleYearDropdown}
-          >
-            <TextInput
-              style={styles.input}
-              placeholder="Select Year"
-              value={year ? year.toString() : ''}
-              editable={false}
-              pointerEvents="none"
-            />
-            <AntDesign name={showYearDropdown ? "up" : "down"} size={20} color={colors.GREY} style={styles.icon} />
-          </TouchableOpacity>
-
-          {/* Year Dropdown */}
-          {showYearDropdown && (
-            <FlatList
-              data={years}
-              keyExtractor={(item) => item.toString()}
-              renderItem={({ item }) => (
+              {/* Year */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Year</Text>
                 <TouchableOpacity
-                  style={styles.dropdownItem}
-                  onPress={() => handleSelectYear(item)}
+                  style={styles.inputWrapper}
+                  onPress={() => setShowYearDropdown(prev => !prev)}
                 >
-                  <Text style={styles.dropdownItemText}>{item}</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Select"
+                    placeholderTextColor={colors.BODY_TEXT}
+                    value={year ? year.toString() : ''}
+                    editable={false}
+                    pointerEvents="none"
+                  />
+                  <AntDesign
+                    name={showYearDropdown ? 'up' : 'down'}
+                    size={20}
+                    color={colors.GREY}
+                    style={styles.icon}
+                  />
                 </TouchableOpacity>
-              )}
-              ItemSeparatorComponent={() => <View style={styles.separator} />}
-              style={styles.dropdown}
-            />
-          )}
-        </View>
+                {showYearDropdown && (
+                  <ScrollView style={styles.dropdown}>
+                    {years.map((item) => (
+                      <TouchableOpacity
+                        key={item.toString()}
+                        style={styles.dropdownItem}
+                        onPress={() => handleSelectYear(item)}
+                      >
+                        <Text style={styles.dropdownItemText}>{item}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                )}
+              </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Milege</Text>
-          <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Milege"
-              value={milege?.toString()}
-              onChangeText={(text) => setMilege(Number(text))}
-            />
+              {/* Milege */}
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Milege</Text>
+                <View style={styles.inputWrapper}>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Enter Milege"
+                    placeholderTextColor={colors.BODY_TEXT}
+                    value={milege?.toString()}
+                    onChangeText={(text) => setMilege(Number(text))}
+                    keyboardType="numeric"
+                  />
+                </View>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('UploadDocument')}
+              style={styles.continueButton}
+            >
+              <Text style={styles.continueButtonText}>Continue</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-      </View>
-
-      <TouchableOpacity
-        onPress={() => navigation.navigate('UploadDocument')}
-        style={styles.continueButton}>
-        <Text style={styles.continueButtonText}>Continue</Text>
-      </TouchableOpacity>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -272,7 +294,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BLUE,
     marginLeft: wp(26),
     borderRadius: wp(12),
-    marginBottom: hp(3)
+    marginBottom: hp(1)
   },
   formContainer: {
     marginTop: hp(1.5),
@@ -294,13 +316,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: wp(2),
-    paddingVertical: hp(1.5),
+    paddingVertical: hp(0.5),
     paddingHorizontal: wp(2.5),
     backgroundColor: colors.WHITE,
   },
   input: {
     flex: 1,
-    fontSize: 16,
+    fontSize: fp(1.6),
     color: colors.DARK_GREY,
     backgroundColor: colors.WHITE,
   },
@@ -322,31 +344,21 @@ const styles = StyleSheet.create({
     fontSize: fp(2.2),
     fontFamily: typography.DMSans_Semibold_600,
   },
-  // Dropdown styles
   dropdown: {
-    position: 'absolute',
-    top: hp(7.8),
-    left: wp(0),
-    right: wp(0),
+    marginTop: hp(0.5),
+    maxHeight: hp(20),
     backgroundColor: colors.WHITE,
     borderRadius: wp(2),
     borderWidth: 1,
     borderColor: colors.LIGHT_GREY,
-    maxHeight: hp(30),
-    zIndex: 999,
   },
   dropdownItem: {
-    paddingVertical: hp(1.5),
+    paddingVertical: hp(1.2),
     paddingHorizontal: wp(4),
   },
   dropdownItemText: {
     fontSize: fp(1.8),
     color: colors.DARK_GREY,
     fontFamily: typography.DMSans_Regular_400,
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#ddd',
-    marginHorizontal: wp(2),
   },
 });
