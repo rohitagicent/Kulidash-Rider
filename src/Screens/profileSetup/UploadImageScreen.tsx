@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Alert, Image, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import Icon2 from 'react-native-vector-icons/Entypo';
 import { colors } from '../../utils/colors';
 import { hp, wp, fp } from '../../utils/dimensions';
 import ProfileIcon from "../../Assets/profile.svg";
@@ -98,15 +99,15 @@ const UploadImageScreen: React.FC = () => {
         </View>
         <View style={styles.instructionsList}>
           <View style={styles.instructionItem}>
-            <Icon name="circle" size={10} color={colors.BLACK} />
+            <Icon2 name="controller-record" size={8} color={colors.BUTTON_COLOR} />
             <Text style={styles.instructionsText}>Make sure your face is clearly visible.</Text>
           </View>
           <View style={styles.instructionItem}>
-            <Icon name="circle" size={10} color={colors.BLACK} />
+            <Icon2 name="controller-record" size={8} color={colors.BUTTON_COLOR} />
             <Text style={styles.instructionsText}>Avoid using filter or group photos.</Text>
           </View>
           <View style={styles.instructionItem}>
-            <Icon name="circle" size={10} color={colors.BLACK} />
+            <Icon2 name="controller-record" size={8} color={colors.BUTTON_COLOR} />
             <Text style={styles.instructionsText}>Use a well-lit and professional-looking image.</Text>
           </View>
         </View>

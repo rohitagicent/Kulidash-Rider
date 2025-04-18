@@ -1,90 +1,79 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  SafeAreaView,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/AntDesign';
+import Icon3 from 'react-native-vector-icons/MaterialCommunityIcons';
+import {fp, hp, wp} from '../../utils/dimensions';
 import {colors} from '../../utils/colors';
-import {hp, wp} from '../../utils/dimensions';
+import User from '../../Assets/user.svg';
+import {typography} from '../../../assets/fonts/typography';
+import Background from '../../Assets/background.svg';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {useNavigation} from '@react-navigation/native';
 
-const MyProfile = () => {
+
+const MyProfile: React.FC = () => {
+   const navigation = useNavigation();
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <LinearGradient colors={['#18378B', '#2A60F1']} style={styles.header}>
-          <TouchableOpacity style={styles.backButton}>
-            <Icon name="arrow-left" size={24} color={colors.WHITE} />
-          </TouchableOpacity>
+    <View style={styles.container}>
+      {/* Header Gradient */}
+      <LinearGradient colors={['#18378B', '#2A60F1']} style={styles.gradient}>
+        <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.goBack()}>
+          <Icon name="chevron-back" size={24} color={colors.WHITE} />
+        </TouchableOpacity>
 
-          <View style={styles.profileImageWrapper}>
-            <Image
-              source={{
-                uri: 'https://images.unsplash.com/photo-1614285750897-36f083ff6d94',
-              }}
-              style={styles.profileImage}
-            />
-            <TouchableOpacity style={styles.cameraIcon}>
-              <Icon name="camera" size={16} color={colors.WHITE} />
-            </TouchableOpacity>
+        <View style={styles.userImageContainer}>
+          <Background style={styles.background} />
+          <View style={styles.imageView}>
+            <User width={160} height={160} style={styles.userimage} />
           </View>
-        </LinearGradient>
-
-        <View style={styles.content}>
-          {/* Full Name */}
-          <Text style={styles.label}>Full Name</Text>
-          <View style={styles.inputRow}>
-            <View style={styles.iconWrapper}>
-              <Icon name="account" size={20} color="#2A60F1" />
-            </View>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Name ipsum"
-              placeholderTextColor={colors.GREY}
-            />
-            <TouchableOpacity>
-              <Icon name="pencil" size={18} color={colors.GREY} />
-            </TouchableOpacity>
-          </View>
-
-          {/* Phone Number */}
-          <Text style={styles.label}>Phone Number</Text>
-          <View style={styles.inputRow}>
-            <View style={styles.iconWrapper}>
-              <Icon name="phone" size={20} color="#2A60F1" />
-            </View>
-            <Text style={styles.phoneText}>9873623923</Text>
-            <Icon name="check-decagram" size={20} color="#00C851" />
-            <TouchableOpacity>
-              <Text style={styles.changeText}>Change</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Email */}
-          <Text style={styles.label}>Email</Text>
-          <View style={styles.inputRow}>
-            <View style={styles.iconWrapper}>
-              <Icon name="email" size={20} color="#2A60F1" />
-            </View>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Example@mail.com"
-              placeholderTextColor={colors.GREY}
-            />
-          </View>
-
-          <TouchableOpacity style={styles.updateButton}>
-            <Text style={styles.updateText}>Update Profile</Text>
-          </TouchableOpacity>
+          <Icon
+            name="camera"
+            size={30}
+            color={colors.BLUE}
+            style={styles.cameraIcon}
+          />
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      </LinearGradient>
+
+      {/* Form Content */}
+      <View style={styles.formWrapper}>
+        {/* Full Name */}
+        <Text style={styles.label}>Full Name</Text>
+        <View style={styles.inputContainer}>
+          <Icon name="person" size={20} color={colors.BLUE} style={styles.labelIcon}/>
+          <Text style={styles.inputText}>Name ipsum</Text>
+          <Icon2
+            name="edit"
+            size={24}
+            color={colors.SUBHEADING}
+            style={styles.editIcon}
+          />
+        </View>
+
+        {/* Phone Number */}
+        <Text style={styles.label}>Phone Number</Text>
+        <View style={styles.inputContainer}>
+          <Icon name="phone-portrait" size={20} color={colors.BLUE} style={styles.labelIcon} />
+          <Text style={styles.inputText}>9873623923</Text>
+          <Icon3 name='check-decagram' size={26} color='#1DD3B0' style={styles.checkIcon}/>
+          <Text style={styles.changeText}>Change</Text>
+        </View>
+
+        {/* Email */}
+        <Text style={styles.label}>Email</Text>
+        <View style={[styles.inputContainer]}>
+          <Icon name="mail" size={20} color={colors.BLUE} style={styles.labelIcon}/>
+          <Text style={styles.inputText}>Example@mail.com</Text>
+        </View>
+
+        {/* Update Profile Button */}
+        <TouchableOpacity style={styles.updateBtn}>
+          <Text style={styles.updateText}>Update Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -95,98 +84,104 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.WHITE,
   },
-  scrollContainer: {
-    flexGrow: 1,
+  gradient: {
+    height: hp(26),
+    justifyContent: 'flex-start',
+    paddingTop: hp(4),
+    paddingLeft: wp(4),
   },
-  header: {
-    height: hp(25),
-    width: '100%',
-    justifyContent: 'flex-end',
+  userImageContainer: {
     alignItems: 'center',
-    paddingBottom: hp(6),
-    position: 'relative',
-    borderBottomLeftRadius: wp(5),
-    borderBottomRightRadius: wp(5),
   },
-  backButton: {
+  background: {
+    top: hp(2.2),
     position: 'absolute',
-    top: hp(2.5),
-    left: wp(5),
-    zIndex: 2,
   },
-  profileImageWrapper: {
-    alignItems: 'center',
+  imageView: {
+    top: hp(3.5),
+    width: wp(40),      
+    height: wp(40),
+    borderRadius: wp(20),
+    overflow: 'hidden',
     justifyContent: 'center',
-  },
-  profileImage: {
-    width: wp(26),
-    height: wp(26),
-    borderRadius: wp(13),
-    borderWidth: 3,
-    borderColor: colors.WHITE,
-  },
-  cameraIcon: {
-    position: 'absolute',
-    bottom: 0,
-    right: wp(4),
-    backgroundColor: '#2A60F1',
-    borderRadius: 20,
-    padding: 6,
-    borderWidth: 2,
-    borderColor: colors.WHITE,
-  },
-  content: {
-    paddingHorizontal: wp(5),
-    paddingTop: hp(2),
-    paddingBottom: hp(5),
-  },
-  label: {
-    fontSize: 14,
-    color: colors.BLACK,
-    marginTop: hp(2),
-    marginBottom: hp(0.7),
-    fontWeight: '600',
-  },
-  inputRow: {
-    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F8F8F8',
-    borderRadius: wp(2),
-    paddingHorizontal: wp(3),
-    paddingVertical: wp(2.5),
-    marginBottom: hp(1.5),
-    borderColor: '#E0E0E0',
-    borderWidth: 1,
+  },
+  userimage: {
+    width: '100%',              
+    height: '100%',
+    borderRadius: wp(20),     
+  },
+  
+  cameraIcon: {
+    backgroundColor: colors.WHITE,
+    padding: wp(2),
+    borderRadius: wp(6),
+    left: wp(16),
+    top: wp(-1.5),
   },
   iconWrapper: {
-    backgroundColor: '#E8ECF4',
-    padding: 6,
-    borderRadius: 10,
+    backgroundColor: '#B7B1F2',
+    width: wp(10),
+    height: wp(10),
+    borderRadius: wp(2),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  textInput: {
+  formWrapper: {
+    paddingHorizontal: wp(5),
+    marginTop: hp(12),
+  },
+  label: {
+    fontFamily: typography.DMSans_Medium_500,
+    fontSize: fp(1.6),
+    color: colors.BUTTON_COLOR,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.WHITE,
+    borderRadius: wp(2),
+    paddingVertical: hp(2),
+    paddingHorizontal: wp(4),
+    marginVertical: hp(1),
+    marginBottom: hp(3),
+    borderWidth: wp(0.4),
+    borderColor: '#E6EAF5',
+  },
+
+  inputText: {
     flex: 1,
-    color: colors.BLACK,
-    paddingLeft: wp(2),
+    marginLeft: wp(2),
+    color: colors.SUBHEADING,
+    fontSize: fp(1.8),
+    fontFamily: typography.DMSans_Medium_500,
   },
-  phoneText: {
-    flex: 1,
-    color: colors.BLACK,
-  },
-  changeText: {
-    color: '#2A60F1',
-    fontWeight: '600',
+  editIcon: {
     marginLeft: wp(2),
   },
-  updateButton: {
-    backgroundColor: '#2A60F1',
-    borderRadius: 10,
-    paddingVertical: hp(1.6),
+  checkIcon:{
+    left:wp(-27)
+  },
+  labelIcon:{
+    backgroundColor:colors.LIGHT_GREY,
+    padding:wp(1),
+    borderRadius:wp(2)
+  },
+  changeText: {
+    color: colors.BLUE,
+    marginLeft: wp(2),
+    fontSize: hp(1.8),
+  },
+  updateBtn: {
+    backgroundColor: colors.BLUE,
+    borderRadius: wp(3),
+    paddingVertical: hp(2.2),
     alignItems: 'center',
-    marginTop: hp(4),
+    marginTop: hp(8),
   },
   updateText: {
     color: colors.WHITE,
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: typography.DMSans_Semibold_600,
+    fontSize: fp(2.2),
   },
 });

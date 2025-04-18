@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -20,6 +20,13 @@ interface Coordinates {
   latitude: number;
   longitude: number;
 }
+
+const DEFAULT_REGION: Region = {
+  latitude: 37.78825,
+  longitude: -122.4324,
+  latitudeDelta: 0.01,
+  longitudeDelta: 0.01,
+};
 
 const customMapStyle = [
   {elementType: 'geometry', stylers: [{color: '#f5f5f5'}]},
@@ -43,6 +50,8 @@ const HomeScreen: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isOrderConfirmedVisible, setIsOrderConfirmedVisible] =
     useState<boolean>(false);
+
+  const mapRef = useRef<MapView | null>(null);
 
   const requestLocationPermission = async (): Promise<boolean> => {
     if (Platform.OS === 'android') {
@@ -69,13 +78,26 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     const getCurrentLocation = async () => {
       const hasPermission = await requestLocationPermission();
-      if (!hasPermission) return;
+      if (!hasPermission) {
+        setLoading(false);
+        return;
+      }
 
       Geolocation.getCurrentPosition(
         position => {
           const {latitude, longitude} = position.coords;
-          setLocation({latitude, longitude});
+          const coords = {latitude, longitude};
+          setLocation(coords);
           setLoading(false);
+
+          mapRef.current?.animateToRegion(
+            {
+              ...coords,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            },
+            1000,
+          );
         },
         error => {
           console.warn(error.message);
@@ -125,32 +147,25 @@ const HomeScreen: React.FC = () => {
         </View>
       )}
 
-      {loading ? (
-        <View style={styles.loaderContainer}>
-          <ActivityIndicator size="large" color={colors.BLUE} />
-        </View>
-      ) : location ? (
-        <MapView
-          style={styles.map}
-          customMapStyle={customMapStyle}
-          initialRegion={
-            {
-              latitude: location.latitude,
-              longitude: location.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01,
-            } as Region
-          }>
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        customMapStyle={customMapStyle}
+        initialRegion={DEFAULT_REGION}>
+        {location && (
           <Marker
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
+            coordinate={location}
             title="You are here"
             pinColor="blue"
           />
-        </MapView>
-      ) : null}
+        )}
+      </MapView>
+
+      {loading && (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color={colors.BLUE} />
+        </View>
+      )}
 
       <OrderDetail
         visible={isModalVisible}
@@ -225,7 +240,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   loaderContainer: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
   },

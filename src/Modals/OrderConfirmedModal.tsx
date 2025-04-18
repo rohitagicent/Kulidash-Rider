@@ -70,7 +70,7 @@ const OrderConfirmedModal: React.FC<OrderConfirmedModalProps> = ({
           {/* Locations */}
           <View style={styles.locationSection}>
             <View style={styles.locationRow}>
-              <Pickup width={wp(4)} height={hp(2)} />
+              <Pickup width={wp(5)} height={hp(5)} />
               <View style={styles.locationText}>
                 <Text style={styles.locationTitle}>Your Location</Text>
                 <Text style={styles.locationDetails}>
@@ -79,8 +79,10 @@ const OrderConfirmedModal: React.FC<OrderConfirmedModalProps> = ({
               </View>
             </View>
 
+            <View style={styles.dottedLine} />
+
             <View style={styles.locationRow}>
-              <Dropoff width={wp(4)} height={hp(2)} />
+              <Dropoff width={wp(5)} height={hp(5)} />
               <View style={styles.locationText}>
                 <Text style={styles.locationTitle}>Pick Up Location</Text>
                 <Text style={styles.locationDetails}>
@@ -89,6 +91,7 @@ const OrderConfirmedModal: React.FC<OrderConfirmedModalProps> = ({
               </View>
             </View>
           </View>
+          
 
           {/* Bottom Actions */}
           <View style={styles.actions}>
@@ -188,7 +191,7 @@ const styles = StyleSheet.create({
   locationRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: hp(2),
+
   },
   locationText: {
     marginLeft: wp(3),
@@ -196,9 +199,17 @@ const styles = StyleSheet.create({
   },
   locationTitle: {
     fontFamily: typography.DMSans_Regular_400,
-    color: colors.LIGHT_BODY_TEXT,
+    color: colors.BODY_TEXT,
     marginBottom: hp(0.5),
     fontSize: fp(1.5),
+  },
+  dottedLine: {
+    height: 26,
+    borderLeftWidth: 2,
+    borderColor: colors.GREY,
+    borderStyle: 'dotted',
+    alignSelf: 'flex-start',
+    marginLeft: 6,
   },
   locationDetails: {
     fontSize: fp(1.7),

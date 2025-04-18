@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 type RootStackParamList = {
   Account: undefined;
   MyProfile: undefined;
+  DocumentScreen:undefined;
 };
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -88,7 +89,7 @@ const AccountScreen: React.FC = () => {
             label="My Profile"
             onPress={() => navigation.navigate('MyProfile')}
           />
-          <SectionItem icon="document-text-outline" label="Documents" />
+          <SectionItem icon="document-text-outline" label="Documents" onPress={() => navigation.navigate('DocumentScreen')}/>
           <SectionItem icon="bicycle-outline" label="Vehicle Information" />
           <SectionItem icon="wallet-outline" label="My Wallet" />
           <SectionItem icon="location-outline" label="My Delivery Area" />

@@ -307,9 +307,8 @@ const styles = StyleSheet.create({
     padding: wp(2),
   },
   locationContainer: {
-    marginTop: 20,
-    gap: 15,
-    paddingHorizontal: wp(3),
+    marginTop: 15,
+    paddingHorizontal: wp(4),
   },
   label: {
     flex: 1,
@@ -323,7 +322,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   dottedLine: {
-    height: 24,
+    height: 26,
     borderLeftWidth: 2,
     borderColor: colors.GREY,
     borderStyle: 'dotted',

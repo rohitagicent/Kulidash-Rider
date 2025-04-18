@@ -37,30 +37,25 @@ const SignupScreen: React.FC = () => {
   const { width } = Dimensions.get('window');
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const [name, setName] = useState<string>('');
-  const [phoneNumber, setPhoneNumber] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [preferredArea, setPreferredArea] = useState<string>('');
-  const [countryCode, setCountryCode] = useState<string>('91');
-  const [countryPickerVisible, setCountryPickerVisible] =
-    useState<boolean>(false);
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const [preferredArea, setPreferredArea] = useState('');
+  const [countryCode, setCountryCode] = useState('91');
+  const [countryPickerVisible, setCountryPickerVisible] = useState(false);
   const [country, setCountry] = useState<Country | null>(null);
 
-  const [isPhoneModalVisible, setIsPhoneModalVisible] =
-    useState<boolean>(false);
-  const [isEmailModalVisible, setIsEmailModalVisible] =
-    useState<boolean>(false);
+  const [isPhoneModalVisible, setIsPhoneModalVisible] = useState(false);
+  const [isEmailModalVisible, setIsEmailModalVisible] = useState(false);
 
-  const [isPhoneVerifyEnabled, setIsPhoneVerifyEnabled] =
-    useState<boolean>(false);
-  const [isEmailVerifyEnabled, setIsEmailVerifyEnabled] =
-    useState<boolean>(false);
+  const [isPhoneVerifyEnabled, setIsPhoneVerifyEnabled] = useState(false);
+  const [isEmailVerifyEnabled, setIsEmailVerifyEnabled] = useState(false);
 
-  const [phoneError, setPhoneError] = useState<string>('');
-  const [emailError, setEmailError] = useState<string>('');
+  const [phoneError, setPhoneError] = useState('');
+  const [emailError, setEmailError] = useState('');
 
-  const [isPhoneVerified, setIsPhoneVerified] = useState<boolean>(false);
-  const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
+  const [isPhoneVerified, setIsPhoneVerified] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const isButtonDisabled =
     !name.trim() ||
@@ -122,10 +117,7 @@ const SignupScreen: React.FC = () => {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
           <View style={styles.container}>
             <View style={styles.frameContainer}>
               <LoginFrame width={width} height={hp(38)} style={styles.Frame} />
@@ -139,7 +131,7 @@ const SignupScreen: React.FC = () => {
               <Text style={styles.signInText}>Create Account</Text>
               <View style={styles.signInUnderline} />
 
-              {/* Name Input */}
+              {/* Name */}
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Your Name</Text>
                 <View style={styles.inputWrapper}>
@@ -156,25 +148,24 @@ const SignupScreen: React.FC = () => {
                 </View>
               </View>
 
-              {/* Phone Number Input */}
+              {/* Phone Number */}
               <View style={styles.inputContainer}>
                 <View style={styles.subText}>
                   <Text style={styles.label}>Phone Number</Text>
-                  <TouchableOpacity
-                    onPress={togglePhoneModal}
-                    disabled={!isPhoneVerifyEnabled}
-                  >
-                    <Text
-                      style={[
-                        styles.verifyText,
-                        isPhoneVerified
-                          ? { color: colors.GREEN }
-                          : { color: colors.BLUE },
-                      ]}
-                    >
-                      {isPhoneVerified ? 'Verified' : 'Verify'}
-                    </Text>
-                  </TouchableOpacity>
+                  {isPhoneVerifyEnabled && (
+                    <TouchableOpacity onPress={togglePhoneModal}>
+                      <Text
+                        style={[
+                          styles.verifyText,
+                          isPhoneVerified
+                            ? { color: colors.GREEN }
+                            : { color: colors.BLUE },
+                        ]}
+                      >
+                        {isPhoneVerified ? 'Verified' : 'Verify'}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
 
                 <View style={styles.inputWrapper}>
@@ -186,12 +177,7 @@ const SignupScreen: React.FC = () => {
                     onPress={() => setCountryPickerVisible(true)}
                   >
                     <Text style={styles.countryCodeText}>+{countryCode}</Text>
-                    <AntDesign
-                      name="down"
-                      size={fp(2)}
-                      color={'#818181'}
-                      style={styles.dropdownIcon}
-                    />
+                    <AntDesign name="down" size={fp(2)} color={'#818181'} style={styles.dropdownIcon} />
                   </TouchableOpacity>
                   <CountryPicker
                     countryCode={country?.cca2 || 'US'}
@@ -218,25 +204,24 @@ const SignupScreen: React.FC = () => {
                 {phoneError ? <Text style={styles.errorText}>{phoneError}</Text> : null}
               </View>
 
-              {/* Email Input */}
+              {/* Email */}
               <View style={styles.inputContainer}>
                 <View style={styles.subText}>
                   <Text style={styles.label}>Email</Text>
-                  <TouchableOpacity
-                    onPress={toggleEmailModal}
-                    disabled={!isEmailVerifyEnabled}
-                  >
-                    <Text
-                      style={[
-                        styles.verifyText,
-                        isEmailVerified
-                          ? { color: colors.GREEN }
-                          : { color: colors.BLUE },
-                      ]}
-                    >
-                      {isEmailVerified ? 'Verified' : 'Verify'}
-                    </Text>
-                  </TouchableOpacity>
+                  {isEmailVerifyEnabled && (
+                    <TouchableOpacity onPress={toggleEmailModal}>
+                      <Text
+                        style={[
+                          styles.verifyText,
+                          isEmailVerified
+                            ? { color: colors.GREEN }
+                            : { color: colors.BLUE },
+                        ]}
+                      >
+                        {isEmailVerified ? 'Verified' : 'Verify'}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
 
                 <View style={styles.inputWrapper}>
@@ -256,7 +241,7 @@ const SignupScreen: React.FC = () => {
                 {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
               </View>
 
-              {/* Preferred Area Input */}
+              {/* Preferred Area */}
               <View style={styles.inputContainer}>
                 <Text style={styles.label}>Preferred Working Area</Text>
                 <View style={styles.inputWrapper}>
@@ -273,7 +258,7 @@ const SignupScreen: React.FC = () => {
                 </View>
               </View>
 
-              {/* Continue Button */}
+              {/* Continue */}
               <TouchableOpacity
                 onPress={() => navigation.navigate('UploadImageScreen')}
                 style={[
@@ -327,6 +312,7 @@ export default SignupScreen;
 
 
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -374,12 +360,13 @@ const styles = StyleSheet.create({
   },
   signInUnderline: {
     height: hp(0.5),
-    width: wp(15),
+    width: wp(14),
     borderRadius:wp(12),
     backgroundColor: colors.BLUE,
     alignSelf: 'flex-start',
     marginBottom: hp(3),
-    marginLeft: hp(12),
+    marginLeft: wp(25),
+
   },
   inputContainer: {
     marginBottom: hp(2),
@@ -389,7 +376,6 @@ const styles = StyleSheet.create({
     color: colors.DARK_GREY,
     fontFamily: typography.DMSans_Medium_500,
     marginBottom: hp(0.5),
-    fontWeight: '500',
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -452,7 +438,7 @@ const styles = StyleSheet.create({
   },
   continueButtonText: {
     color: colors.WHITE,
-    fontSize: fp(1.8),
+    fontSize: fp(2.2),
     fontFamily: typography.DMSans_Semibold_600,
   },
   signUpContainer: {

@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import StepIndicator from 'react-native-step-indicator';
-import { fp, hp, wp } from '../../utils/dimensions';
-import { typography } from '../../../assets/fonts/typography';
-import { colors } from '../../utils/colors';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import {fp, hp, wp} from '../../utils/dimensions';
+import {typography} from '../../../assets/fonts/typography';
+import {colors} from '../../utils/colors';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 interface RiderVerificationScreenProps {}
 
@@ -20,32 +20,27 @@ const RiderVerificationScreen: React.FC<RiderVerificationScreenProps> = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   // Step data
-  const steps = [
-    "Vehicle Information",
-    "Document Uploaded",
-    "Vehicle Images"
-  ];
+  const steps = ['Vehicle Information', 'Document Upload', 'Vehicle Images'];
 
   const stepDescriptions = [
     "Add details to the vehicle you'll use for deliveries",
-    "Verify your identity by submitting required documents.",
-    "Upload clear photos of your vehicle from all sides"
+    'Verify your identity by submitting required documents.',
+    'Upload clear photos of your vehicle from all sides',
   ];
-
   const customStyles = {
     stepIndicatorSize: wp(8),
-    currentStepIndicatorSize: wp(6),
-    separatorStrokeWidth: 2,
-    currentStepStrokeWidth: 2,
+    currentStepIndicatorSize: wp(8),
+    separatorStrokeWidth: 4,
+    currentStepStrokeWidth: 7,
+    stepStrokeWidth: 7,
     stepStrokeCurrentColor: colors.BLUE,
-    stepStrokeWidth:3,
     stepStrokeFinishedColor: colors.BLUE,
-    stepStrokeUnFinishedColor: colors.WHITE,
+    stepStrokeUnFinishedColor: colors.BLUE,
     separatorFinishedColor: colors.BLUE,
     separatorUnFinishedColor: colors.BLUE,
-    stepIndicatorFinishedColor: colors.WHITE, 
-    stepIndicatorUnFinishedColor: colors.WHITE,
-    stepIndicatorCurrentColor: colors.WHITE,
+    stepIndicatorFinishedColor: colors.BACKGROUND,
+    stepIndicatorUnFinishedColor: colors.BLUE,
+    stepIndicatorCurrentColor: colors.BLUE,
     stepIndicatorLabelFontSize: 0,
     currentStepIndicatorLabelFontSize: 0,
     stepIndicatorLabelCurrentColor: 'transparent',
@@ -63,10 +58,9 @@ const RiderVerificationScreen: React.FC<RiderVerificationScreenProps> = () => {
     <View style={styles.container}>
       <LinearGradient
         colors={['#18378B', '#2A60F1']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 0.5 }}
+        start={{x: 0, y: 0}}
+        end={{x: 0, y: 0.5}}
         style={styles.gradient}>
-            
         <View style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.text}>Hii, John</Text>
@@ -76,7 +70,7 @@ const RiderVerificationScreen: React.FC<RiderVerificationScreenProps> = () => {
           {/* Image View */}
           <View style={styles.imageContainer}>
             <Image
-              source={{ uri: 'https://picsum.photos/200/300?grayscale' }}
+              source={{uri: 'https://picsum.photos/200/300?grayscale'}}
               style={styles.image}
             />
           </View>
@@ -86,7 +80,9 @@ const RiderVerificationScreen: React.FC<RiderVerificationScreenProps> = () => {
       <View style={styles.infoView}>
         <View style={styles.textView}>
           <Text style={styles.verificationText}>Rider Verification</Text>
-          <Text style={styles.subtext}>Verify your details to start accepting deliveries seamlessly</Text>
+          <Text style={styles.subtext}>
+            Verify your details to start accepting deliveries seamlessly
+          </Text>
         </View>
 
         <View style={styles.stepIndicatorContainer}>
@@ -96,26 +92,32 @@ const RiderVerificationScreen: React.FC<RiderVerificationScreenProps> = () => {
             stepCount={3}
             labels={steps}
             direction="vertical"
-            renderStepIndicator={({ position, stepStatus }) => {
+            renderStepIndicator={({position, stepStatus}) => {
               return (
-                <View style={[
-                  styles.customStepIndicator,
-                  {
-                    backgroundColor: colors.WHITE,
-                    borderColor: colors.BLUE,
-                  }
-                ]} />
+                <View
+                  style={[
+                    styles.customStepIndicator,
+                    {
+                      backgroundColor: colors.WHITE,
+                      borderColor: colors.BLUE,
+                      width: wp(5), 
+                      height: wp(5), 
+                      borderRadius: wp(2.5),
+                    },
+                  ]}
+                />
               );
             }}
-            renderLabel={({ position, stepStatus, label }) => {
+            renderLabel={({position, stepStatus, label}) => {
               return (
                 <View style={styles.labelContainer}>
-                  <Text style={[
-                    styles.stepLabelText,
-                    stepStatus === 'finished' || stepStatus === 'current'
-                      ? styles.activeStepLabel
-                      : styles.inactiveStepLabel
-                  ]}>
+                  <Text
+                    style={[
+                      styles.stepLabelText,
+                      stepStatus === 'finished' || stepStatus === 'current'
+                        ? styles.activeStepLabel
+                        : styles.inactiveStepLabel,
+                    ]}>
                     {label}
                   </Text>
                   <Text style={styles.stepDescription}>
@@ -216,7 +218,7 @@ const styles = StyleSheet.create({
     marginTop: hp(4),
     width: wp(70),
     paddingLeft: wp(2),
-    marginBottom: hp(3), 
+    marginBottom: hp(3),
   },
   stepLabelText: {
     fontSize: fp(2),

@@ -55,7 +55,7 @@ const AllsetScreen: React.FC = () => {
       </View>
 
       <TouchableOpacity style={styles.btn} onPress={handleExploreFeatures}>
-        <Text style={styles.btnText}>Explore all features</Text>
+        <Text style={styles.btnText}>Explore App features</Text>
         <Icon name="arrowright" size={20} color={colors.WHITE} />
       </TouchableOpacity>
     </View>
@@ -103,10 +103,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    gap: wp(1),
+    gap: wp(1.5),
   },
   btnText: {
-    fontSize: fp(1.6),
+    fontSize: fp(1.8),
     fontFamily: typography.DMSans_Medium_500,
     color: colors.WHITE,
   },

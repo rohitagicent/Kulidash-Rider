@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
     color: colors.BLACK, 
     textAlign: 'center',
     marginBottom: hp(0.5),
-    fontWeight:'700',
   },
   signInUnderline: {
     height: hp(0.5),
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.BLUE,
     alignSelf: 'flex-start',
     marginBottom: hp(3),
-    marginLeft: hp(8.5),
+    marginLeft: wp(14),
   },
   inputContainer: {
     marginBottom: hp(3),
@@ -186,7 +185,7 @@ const styles = StyleSheet.create({
     fontFamily:typography.DMSans_Medium_500,
     color: colors.DARK_GREY, 
     marginBottom: hp(1),
-    marginLeft:wp(3)
+    marginLeft:wp(1)
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
   continueButtonText: {
     color: colors.WHITE, 
     fontFamily:typography.DMSans_Semibold_600,
-    fontSize: fp(1.8),
+    fontSize: fp(2.2),
   },
   signUpContainer: {
     flexDirection: 'row',

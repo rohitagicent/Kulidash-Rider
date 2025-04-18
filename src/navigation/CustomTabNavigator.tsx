@@ -173,13 +173,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   label: {
-    fontSize: fp(1.6),
+    fontSize: fp(1.5),
     color: colors.GREY,
     fontFamily: typography.DMSans_Medium_500,
   },
   labelFocused: {
     color: colors.BLUE,
-    fontWeight: '700',
+    fontFamily:typography.DMSans_Semibold_600,
   },
   indicator: {
     position: 'absolute',
